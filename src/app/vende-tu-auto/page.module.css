@@ -1,0 +1,197 @@
+.pageWrapper {
+  background: #f8fafc;
+}
+
+.heroSection {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 42px 22px 26px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.heroTextCol h1 {
+  color: #06182c;
+  font-size: 48px;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.heroTextCol h2 {
+  color: #0f2c47;
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.heroTextCol p {
+  color: #334155;
+  font-size: 18px;
+  line-height: 1.55;
+  max-width: 720px;
+}
+
+.ctaButton {
+  margin-top: 18px;
+  border: none;
+  border-radius: 8px;
+  background: #0044cc;
+  color: #fff;
+  padding: 12px 18px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ctaButton:hover {
+  background: #0037a5;
+}
+
+.heroImageCol {
+  display: flex;
+  justify-content: center;
+}
+
+.heroImage {
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  border-radius: 14px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
+}
+
+.formSection {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 12px 22px 20px;
+}
+
+.formContainer {
+  background: #f1f5f9;
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.formContainer h3 {
+  font-size: 32px;
+  color: #06182c;
+  margin-bottom: 16px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.formGrid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.formGrid input,
+.formGrid textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.submitButton {
+  border: none;
+  border-radius: 8px;
+  background: #0044cc;
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  padding: 12px 28px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background: #0037a5;
+}
+
+.whatsBanner {
+  max-width: 1300px;
+  margin: 0 auto 24px;
+  padding: 16px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  background: #e7f7ee;
+  border: 1px solid #b9e8cb;
+  border-radius: 12px;
+}
+
+.whatsInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.whatsInfo i {
+  font-size: 34px;
+  color: #25d366;
+}
+
+.whatsInfo strong {
+  display: block;
+  color: #0f5132;
+  font-size: 22px;
+}
+
+.whatsInfo p {
+  margin: 0;
+  color: #334155;
+}
+
+.whatsAction {
+  background: #25d366;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.whatsAction:hover {
+  background: #1eb95a;
+}
+
+@media (max-width: 900px) {
+  .heroSection {
+    grid-template-columns: 1fr;
+  }
+
+  .heroTextCol h1 {
+    font-size: 36px;
+  }
+
+  .heroTextCol h2 {
+    font-size: 22px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .whatsBanner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
