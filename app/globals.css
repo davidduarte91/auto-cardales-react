@@ -198,16 +198,16 @@ nav .social-links a:hover {
 }
 
 .comprar-btn {
-    border-color: #e7e54a;
-    background-color: #e7e54a;
+    border-color: #f97316;
+    background-color: #f97316;
     color: white;
 }
 
 .comprar-btn:hover {
-    border-color: #e7e54a;
-    background-color: #e7e54a;
+    border-color: #ea580c;
+    background-color: #ea580c;
     color: #ffffff;
-    box-shadow: 0 0 20px rgba(231, 229, 74, 0.6);
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.6);
 }
 
 .vender-btn {
@@ -911,6 +911,13 @@ nav .social-links a:hover {
     margin-bottom: 8px;
 }
 
+.mini-contacto-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 620px) minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
 .mini-contacto-form {
     display: flex;
     flex-direction: column;
@@ -945,6 +952,42 @@ nav .social-links a:hover {
 
 .mini-contacto-form button:hover {
     background: #003399;
+}
+
+.mini-contacto-side {
+    color: #374151;
+    font-size: 20px;
+    line-height: 1.35;
+    padding-top: 2px;
+}
+
+.mini-contacto-side p {
+    margin-bottom: 10px;
+}
+
+.mini-contacto-side a {
+    color: #06182c;
+}
+
+.mini-contacto-tel a {
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.mini-contacto-seguinos {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+}
+
+.mini-contacto-seguinos .socials {
+    display: inline-flex;
+    gap: 12px;
+}
+
+.mini-contacto-seguinos .socials a {
+    font-size: 24px;
 }
 
 
@@ -1216,8 +1259,22 @@ nav .social-links a:hover {
         font-size: 22px;
     }
 
+    .mini-contacto-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
     .mini-contacto-form {
         max-width: 100%;
+    }
+
+    .mini-contacto-side,
+    .mini-contacto-seguinos {
+        font-size: 18px;
+    }
+
+    .mini-contacto-tel a {
+        font-size: 28px;
     }
 
     .ubicacion-mapa iframe {
