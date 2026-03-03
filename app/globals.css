@@ -4,6 +4,16 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
@@ -867,7 +877,7 @@ nav .social-links a:hover {
 }
 
 .ubicacion-info h2 {
-    font-size: 44px; /* aumentar título */
+    font-size: 40px;
     color: #06182c;
     margin-bottom: 8px;
 }
@@ -955,28 +965,41 @@ nav .social-links a:hover {
 }
 
 .mini-contacto-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-self: center;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
     color: #374151;
     font-size: 20px;
-    line-height: 1.35;
+    line-height: 1.55;
     padding-top: 2px;
 }
 
 .mini-contacto-side p {
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .mini-contacto-side a {
     color: #06182c;
 }
 
+.mini-contacto-mail a {
+    font-size: 20px;
+}
+
 .mini-contacto-tel a {
     font-size: 30px;
     font-weight: 800;
+    color: #0f3bd9 !important;
 }
 
 .mini-contacto-seguinos {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
     font-size: 20px;
 }
@@ -988,6 +1011,12 @@ nav .social-links a:hover {
 
 .mini-contacto-seguinos .socials a {
     font-size: 24px;
+    transition: color 0.2s ease;
+}
+
+.mini-contacto-seguinos .socials a:hover,
+.mini-contacto-seguinos .socials a:focus-visible {
+    color: #2563eb;
 }
 
 
@@ -1270,6 +1299,14 @@ nav .social-links a:hover {
 
     .mini-contacto-side,
     .mini-contacto-seguinos {
+        font-size: 18px;
+    }
+
+    .mini-contacto-side {
+        gap: 14px;
+    }
+
+    .mini-contacto-mail a {
         font-size: 18px;
     }
 

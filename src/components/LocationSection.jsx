@@ -6,7 +6,7 @@ export default function LocationSection(){
       <div className="ubicacion-contenedor">
         <div className="ubicacion-info">
           <h2>Dónde estamos</h2>
-          <p className="direccion">Sargento Cabral 357<br />Los Cardales</p>
+          <p className="direccion">Sargento Cabral 357<br />Los Cardales<br />Exaltación de la cruz, Bs. As.</p>
         </div>
         <div className="ubicacion-mapa">
           <iframe
@@ -33,6 +33,7 @@ export default function LocationSection(){
             <input type="hidden" name="_captcha" value="false" />
             <input type="text" name="nombre" placeholder="Tu nombre" required />
             <input type="email" name="email" placeholder="Tu email" required />
+            <input type="tel" name="telefono" placeholder="Tu número de teléfono" required />
             <textarea
               name="mensaje"
               rows={3}
@@ -43,7 +44,7 @@ export default function LocationSection(){
           </form>
 
           <aside className="mini-contacto-side">
-            <p><strong>Contacto:</strong> <a href="mailto:autocardales@gmail.com">autocardales@gmail.com</a></p>
+            <p className="mini-contacto-mail"><a href="mailto:autocardales@gmail.com">autocardales@gmail.com</a></p>
             <p className="mini-contacto-tel"><a href="tel:+5491156074949"><strong>011 5607-4949</strong></a></p>
             <div className="mini-contacto-seguinos">
               <span>Seguinos</span>

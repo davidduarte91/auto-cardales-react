@@ -67,7 +67,7 @@ export default function VehicleDetailView({ vehiculo }) {
             <div><dt>Transmisión:</dt><dd>{vehiculo.transmision}</dd></div>
           </dl>
 
-          <a href="#consulta-vehiculo" className={styles.primaryBtn}>
+          <a href="#contacto" className={styles.primaryBtn}>
             Quiero consultar o agendar una visita <i className="fa-solid fa-arrow-right"></i>
           </a>
         </aside>
@@ -144,8 +144,8 @@ export default function VehicleDetailView({ vehiculo }) {
         </section>
       </section>
 
-      <section id="consulta-vehiculo" className={styles.consultaSection}>
-        <div className={styles.consultaFormCol}>
+      <section id="ubicacion" className={styles.consultaSection}>
+        <div id="contacto" className={styles.consultaFormCol}>
           <h3>¡Quiero consultar o agendar una visita por este vehículo!</h3>
 
           <form
