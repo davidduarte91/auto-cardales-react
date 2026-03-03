@@ -4,11 +4,14 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../app/vehiculos/[slug]/page.module.css";
+import { vehiculos } from "../data/vehiculos";
+import { slugifyVehiculoNombre } from "../lib/vehiculos";
 
 export default function VehicleDetailView({ vehiculo }) {
   const nextUrl = typeof window !== "undefined" ? `${window.location.origin}/gracias` : "/gracias";
   const imagenes = vehiculo.imagenes || [];
   const totalImagenes = imagenes.length;
+  const sugeridos = vehiculos.filter((item) => item.id !== vehiculo.id).slice(0, 4);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const imagenActiva = totalImagenes > 0 ? imagenes[activeIndex] : null;
@@ -33,6 +36,34 @@ export default function VehicleDetailView({ vehiculo }) {
   const handleNextImage = () => {
     if (totalImagenes <= 1) return;
     setActiveIndex((current) => (current + 1) % totalImagenes);
+  };
+
+  const handleShareSugerido = async (event, item) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (typeof window === "undefined") return;
+
+    const slug = slugifyVehiculoNombre(item.nombre);
+    const shareUrl = `${window.location.origin}/vehiculos/${slug}`;
+    const shareData = {
+      title: `${item.nombre} | ${item.año} | ${item.km}`,
+      text: `Mirá este vehículo: ${item.nombre} | ${item.año} | ${item.km}`,
+      url: shareUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        return;
+      }
+
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl);
+      }
+    } catch {
+      // Usuario canceló o el navegador bloqueó la acción.
+    }
   };
 
   return (
@@ -203,6 +234,60 @@ export default function VehicleDetailView({ vehiculo }) {
             </div>
           </div>
         </aside>
+      </section>
+
+      <section className={styles.sugeridosSection}>
+        <h2>También te puede interesar</h2>
+
+        <div className={styles.sugeridosGrid}>
+          {sugeridos.map((item) => {
+            const slug = slugifyVehiculoNombre(item.nombre);
+            const imageSrc = item.imagenes?.[0] || "/img/logo-cuadrado-facebook.jpg";
+
+            return (
+              <article key={item.id} className={styles.sugeridoCard}>
+                <Link href={`/vehiculos/${slug}`} className={styles.sugeridoImageWrap}>
+                  <Image
+                    src={imageSrc}
+                    alt={item.nombre}
+                    fill
+                    sizes="(max-width: 980px) 100vw, 25vw"
+                    className={styles.sugeridoImage}
+                  />
+                </Link>
+
+                <div className={styles.sugeridoBody}>
+                  <h3>
+                    <Link href={`/vehiculos/${slug}`}>{item.nombre}</Link>
+                  </h3>
+                  <div className={styles.sugeridoPrecioRow}>
+                    <p className={styles.sugeridoPrecio}>{item.precio}</p>
+                    <button
+                      type="button"
+                      className={styles.sugeridoShareBtn}
+                      onClick={(event) => handleShareSugerido(event, item)}
+                      aria-label={`Compartir ${item.nombre}`}
+                      title="Compartir"
+                    >
+                      <i className="fa-solid fa-share-nodes" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <div className={styles.sugeridoMeta}>
+                    <span>{item.año}</span>
+                    <span>{item.km}</span>
+                    <span>{item.transmision}</span>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className={styles.sugeridosCtaWrap}>
+          <Link href="/vehiculos-disponibles" className={styles.sugeridosCta}>
+            Ver más
+          </Link>
+        </div>
       </section>
     </main>
   );

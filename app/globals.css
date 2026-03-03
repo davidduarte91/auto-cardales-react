@@ -496,6 +496,160 @@ nav .social-links a:hover {
     grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.vehiculos-disponibles-main {
+    background-color: #f4f4f4;
+    padding-top: 22px;
+}
+
+.buscador-disponibles {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 10px 12px 0;
+    background: #f4f4f4;
+}
+
+.buscador-disponibles-form {
+    width: 100%;
+    background: #f4f4f4;
+}
+
+.buscador-disponibles-input-wrap {
+    position: relative;
+    background: #f4f4f4;
+    border-radius: 999px;
+}
+
+.buscador-disponibles-input-wrap i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+}
+
+.buscador-disponibles-input-wrap input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 999px;
+    padding: 12px 190px 12px 40px;
+    font-size: 16px;
+    font-family: inherit;
+    background-color: #f4f4f4 !important;
+}
+
+.buscador-disponibles-input-wrap input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.buscador-disponibles-actions {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f4f4f4;
+    padding-left: 6px;
+    border-radius: 999px;
+}
+
+.buscador-clear-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    background: #f4f4f4;
+    color: #64748b;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.buscador-clear-btn.is-visible {
+    display: inline-flex;
+}
+
+.buscador-clear-btn:hover,
+.buscador-clear-btn:focus-visible {
+    color: #0f172a;
+    border-color: #94a3b8;
+}
+
+.buscador-submit-btn {
+    border: none;
+    border-radius: 999px;
+    background: #0044cc;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 8px 18px;
+    cursor: pointer;
+    min-width: 124px;
+}
+
+.buscador-submit-btn:hover,
+.buscador-submit-btn:focus-visible {
+    background: #003399;
+}
+
+.buscador-disponibles-input-wrap input:focus {
+    outline: 2px solid #93c5fd;
+    outline-offset: 1px;
+    border-color: #93c5fd;
+}
+
+.buscador-disponibles-sugerencias {
+    margin-top: 8px;
+    border: 1px solid #cfd8e3;
+    border-radius: 10px;
+    background: #e9eef5;
+    overflow: hidden;
+}
+
+.buscador-sugerencia-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-decoration: none;
+    padding: 10px 12px;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.buscador-sugerencia-item:last-child {
+    border-bottom: none;
+}
+
+.buscador-sugerencia-item strong {
+    color: #0f172a;
+    font-size: 16px;
+}
+
+.buscador-sugerencia-item span {
+    color: #475569;
+    font-size: 14px;
+}
+
+.buscador-sugerencia-item:hover,
+.buscador-sugerencia-item:focus-visible {
+    background: #dde6f1;
+}
+
+.buscador-sugerencia-item.is-active {
+    background: #d6e0ed;
+}
+
+.buscador-sin-resultados {
+    padding: 10px 12px;
+    color: #475569;
+    font-size: 14px;
+}
+
 /* ESTILOS DE LA TARJETA (CARD) */
 .card {
     background-color: #1a202c; /* Fondo oscuro (Dark Mode) */
@@ -506,6 +660,16 @@ nav .social-links a:hover {
     transition: transform 0.3s;
     display: flex;
     flex-direction: column;
+}
+
+#vehiculos-disponibles .card {
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#vehiculos .card {
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .card:hover {
@@ -528,6 +692,11 @@ nav .social-links a:hover {
 /* Fotos de las cards pequeñas: un poco más grandes para destacar visualmente */
 .card:not(.card-grande) .foto-contenedor {
     height: 180px;
+}
+
+#vehiculos-disponibles .card:not(.card-grande) .foto-contenedor {
+    height: auto;
+    aspect-ratio: 4 / 3;
 }
 
 /* Ajuste de altura para la tarjeta grande */
@@ -699,6 +868,65 @@ nav .social-links a:hover {
     .grilla-vehiculos {
         grid-template-columns: 1fr; /* Una sola columna en celular */
     }
+
+    #vehiculos-disponibles .grilla-vehiculos.grilla-cuatro-iguales {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    #vehiculos-disponibles .info-auto h3 {
+        font-size: 14px;
+    }
+
+    #vehiculos-disponibles .precio-share-row {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    #vehiculos-disponibles .precio-destacado {
+        font-size: 18px;
+        margin-top: 6px;
+        padding-top: 6px;
+    }
+
+    #vehiculos-disponibles .card-share-btn {
+        width: 28px;
+        height: 28px;
+    }
+
+    #vehiculos-disponibles .detalles {
+        margin-top: 8px;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #vehiculos-disponibles .detalles span {
+        font-size: 11px;
+        padding: 3px 6px;
+        line-height: 1.2;
+    }
+
+    #vehiculos-disponibles h2 {
+        font-size: 28px;
+        margin-bottom: 18px;
+    }
+
+    .buscador-disponibles-input-wrap input {
+        padding-right: 156px;
+    }
+
+    .buscador-submit-btn {
+        min-width: 96px;
+        font-size: 15px;
+        padding: 8px 12px;
+    }
+
+    .buscador-clear-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
+    }
     
     .card-grande {
         grid-column: span 1; /* Ya no ocupa doble espacio */
@@ -718,9 +946,42 @@ nav .social-links a:hover {
         padding-top: 18px; /* menos espacio en móvil */
     }
 
+    #vehiculos-disponibles h2 {
+        font-size: 22px;
+        margin-bottom: 14px;
+    }
+
     .grilla-vehiculos {
         padding-left: 8px;
         padding-right: 8px;
+    }
+
+    #vehiculos-disponibles .grilla-vehiculos.grilla-cuatro-iguales {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    #vehiculos-disponibles .info-auto {
+        padding: 8px;
+    }
+
+    #vehiculos-disponibles .precio-share-row {
+        padding-left: 26px;
+        padding-right: 26px;
+    }
+
+    #vehiculos-disponibles .precio-destacado {
+        font-size: 16px;
+    }
+
+    #vehiculos-disponibles .card-share-btn {
+        width: 26px;
+        height: 26px;
+    }
+
+    #vehiculos-disponibles .detalles span {
+        font-size: 10px;
+        padding: 2px 5px;
     }
 
     .botonera-inferior {
@@ -882,7 +1143,7 @@ nav .social-links a:hover {
 }
 
 .ubicacion-info h2 {
-    font-size: 40px;
+    font-size: 30px;
     color: #06182c;
     margin-bottom: 8px;
 }
@@ -1264,7 +1525,7 @@ nav .social-links a:hover {
     }
 
     .ubicacion-info h2 {
-        font-size: 32px;
+        font-size: 22px;
         line-height: 1.15;
         margin-bottom: 10px;
     }
