@@ -89,6 +89,11 @@ export default function VehicleCard({ vehiculo, href }) {
           <Image src="/img/logo-cuadrado-facebook.jpg" alt={vehiculo.nombre} width={900} height={600} />
         )}
         {vehiculo.etiquetaPrecio ? <span className="etiqueta-precio">{vehiculo.etiquetaPrecio}</span> : null}
+        {vehiculo.gnc ? (
+          <span className="etiqueta-gnc">
+            {typeof vehiculo.gnc === "string" ? vehiculo.gnc : "GNC"}
+          </span>
+        ) : null}
       </div>
       <div className="info-auto">
         <h3>{vehiculo.nombre}</h3>
@@ -104,6 +109,7 @@ export default function VehicleCard({ vehiculo, href }) {
             <i className="fa-solid fa-share-nodes" aria-hidden="true"></i>
           </button>
         </div>
+        {vehiculo.reservaDesde ? <div className="reserva-desde">Reservá desde {vehiculo.reservaDesde}</div> : null}
         <div className="detalles">
           <span>{vehiculo.año}</span>
           <span>{vehiculo.km}</span>

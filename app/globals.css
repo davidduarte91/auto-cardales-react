@@ -738,6 +738,20 @@ nav .social-links a:hover {
     font-size: 16px;
 }
 
+.etiqueta-gnc {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background-color: #16a34a;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 13px;
+    z-index: 3;
+    white-space: nowrap;
+}
+
 /* === INFORMACIÓN DEL AUTO === */
 .info-auto {
     padding: 10px; /* menos padding para acercar contenido al borde */
@@ -822,6 +836,7 @@ nav .social-links a:hover {
     padding: 4px 8px;
     border-radius: 4px;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 /* Precio destacado: más grosor y una línea fina separadora */
@@ -837,6 +852,19 @@ nav .social-links a:hover {
 
 .card-grande .precio-destacado {
     font-size: 22px;
+}
+
+.reserva-desde {
+    margin-top: 6px;
+    text-align: center;
+    font-size: 13px;
+    color: #93c5fd;
+    font-weight: 600;
+}
+
+.detalles .detalle-gnc {
+    background-color: #16a34a;
+    color: #ffffff;
 }
 
 /* === BOTÓN FINAL DE "VER TODOS" === */
@@ -905,6 +933,18 @@ nav .social-links a:hover {
         font-size: 11px;
         padding: 3px 6px;
         line-height: 1.2;
+    }
+
+    #vehiculos-disponibles .etiqueta-gnc {
+        font-size: 11px;
+        padding: 4px 8px;
+        right: 8px;
+        bottom: 8px;
+    }
+
+    #vehiculos-disponibles .reserva-desde {
+        font-size: 11px;
+        margin-top: 4px;
     }
 
     #vehiculos-disponibles h2 {
@@ -982,6 +1022,10 @@ nav .social-links a:hover {
     #vehiculos-disponibles .detalles span {
         font-size: 10px;
         padding: 2px 5px;
+    }
+
+    #vehiculos-disponibles .reserva-desde {
+        font-size: 10px;
     }
 
     .botonera-inferior {

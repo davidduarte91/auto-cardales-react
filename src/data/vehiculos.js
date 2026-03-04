@@ -8,6 +8,8 @@ export const vehiculos = [
     km: "35.000 km",
     transmision: "Manual",
     destacado: true,
+    reservaDesde: "",
+    gnc: false,
     imagenes: [
       "/img/Peugeot Partner 1.4 - 2015/frente.jpg",
       "/img/Peugeot Partner 1.4 - 2015/frente-costado.jpg",
@@ -22,6 +24,8 @@ export const vehiculos = [
     km: "120.000 km",
     transmision: "Automática",
     destacado: false,
+    reservaDesde: "",
+    gnc: false,
     imagenes: [
       "/img/Toyota Hilux 4X4 Automática - 2007/frente.jpg",
       "/img/Toyota Hilux 4X4 Automática - 2007/frente-costado.jpg",
@@ -37,11 +41,12 @@ export const vehiculos = [
     km: "93.930 km",
     transmision: "Manual",
     destacado: false,
+    reservaDesde: "",
+    gnc: false,
     imagenes: [
       "/img/VW Gol Trend 1.6  Año 2019/frente.jpg",
       "/img/VW Gol Trend 1.6  Año 2019/frente-costado-derecho.jpg",
-      "/img/VW Gol Trend 1.6  Año 2019/frente-costado-izquierdo.jpg",
-      "/img/VW Gol Trend 1.6  Año 2019/frente-hero.webp"
+      "/img/VW Gol Trend 1.6  Año 2019/frente-costado-izquierdo.jpg"
     ]
   },
   {
@@ -52,6 +57,8 @@ export const vehiculos = [
     km: "-- km",
     transmision: "--",
     destacado: false,
+    reservaDesde: "",
+    gnc: false,
     imagenes: [
       "/img/VW Bora 2.0L  Año 2013/frente izquierdo.jpg"
     ]
@@ -64,8 +71,33 @@ export const vehiculos = [
     km: "120.000 km",
     transmision: "Manual",
     destacado: false,
+    reservaDesde: "",
+    gnc: false,
     imagenes: [
       "/img/Chevrolet Onix Black Edition 1.4   Año 2021/frente-izquierdo.jpg"
+    ]
+  },
+  {
+    id: 6,
+    nombre: "Renault Kangoo 1.6 | Nafta/Gnc",
+    precio: "US$ 8.000",
+    año: 2014,
+    km: "200.000 km",
+    transmision: "Manual",
+    destacado: true,
+    reservaDesde: "$6.000.000",
+    gnc: "Nafta + GNC",
+    imagenes: [
+      "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/01-frente-izquierdo.webp",
+      "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/02-frente.webp",
+      "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/03-frente-derecho.webp",
+      "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/04-atras-derecha.webp",
+      "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/05-atras.webp",
+      "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/06-atras-izquierdo.webp",
+      "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/07-interior-delante.webp",
+      "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/08-interior-atras.webp",
+      "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/09-interior-delante2.webp",
+      "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/10-baul.webp"
     ]
   }
 ];
