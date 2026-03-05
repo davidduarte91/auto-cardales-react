@@ -11,12 +11,17 @@ export default function VehicleGrid({
   showCta = true,
   uniformCards = false,
   gridClassName = "",
+  onlyHomeSelection = false,
 }) {
+  const vehiculosParaMostrar = onlyHomeSelection
+    ? vehiculos.filter((v) => v.mostrarEnHome)
+    : vehiculos;
+
   return (
     <section id={sectionId} className="seccion-vehiculos">
       <h2>{title}</h2>
       <div className={`grilla-vehiculos ${gridClassName}`.trim()}>
-        {vehiculos.map((v) => {
+        {vehiculosParaMostrar.map((v) => {
           const vehiculoCard = uniformCards ? { ...v, destacado: false } : v;
           return <VehicleCard key={v.id} vehiculo={vehiculoCard} href={`/vehiculos/${slugifyVehiculoNombre(v.nombre)}`} />;
         })}

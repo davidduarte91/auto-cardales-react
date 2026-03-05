@@ -20,6 +20,10 @@ export default function VehicleQuickSearch() {
   const [activeIndex, setActiveIndex] = useState(-1);
   const normalizedQuery = normalizeText(query);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
   const suggestions = useMemo(() => {
     if (!normalizedQuery) return [];
 

@@ -15,10 +15,10 @@ export default function Footer() {
 
         <nav className="footer-ac-links" aria-label="Enlaces importantes">
           <ul>
-            <li><a href="#vehiculos">Vehículos disponibles</a></li>
+            <li><Link href="/vehiculos-disponibles">Vehículos disponibles</Link></li>
             <li><Link href="/vende-tu-auto">Vendé tu auto</Link></li>
             <li><a href="#ubicacion">Dónde estamos</a></li>
-            <li><a href="#nosotros">Sobre nosotros</a></li>
+            <li><Link href="/sobre-nosotros">Sobre nosotros</Link></li>
             <li><a href="#contacto">Contacto</a></li>
           </ul>
         </nav>

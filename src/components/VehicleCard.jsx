@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -12,6 +12,18 @@ import 'swiper/css/effect-fade';
 export default function VehicleCard({ vehiculo, href }) {
   const router = useRouter();
   const tieneVariasImagenes = vehiculo.imagenes && vehiculo.imagenes.length > 1;
+  const [orientacionPorSrc, setOrientacionPorSrc] = useState({});
+
+  const handleImageReady = (src, event) => {
+    const target = event.currentTarget;
+    if (!target) return;
+
+    const isVertical = target.naturalHeight > target.naturalWidth;
+    setOrientacionPorSrc((prev) => {
+      if (prev[src] === isVertical) return prev;
+      return { ...prev, [src]: isVertical };
+    });
+  };
 
   const handleCardNavigate = (event) => {
     if (!href) return;
@@ -81,12 +93,48 @@ export default function VehicleCard({ vehiculo, href }) {
           >
             {vehiculo.imagenes.map((src, i) => (
               <SwiperSlide key={i}>
-                <Image src={src} alt={`${vehiculo.nombre} ${i + 1}`} width={900} height={600} />
+                {(() => {
+                  const isVertical = orientacionPorSrc[src] === true;
+                  return (
+                <div className="foto-stage">
+                  {isVertical ? (
+                    <Image src={src} alt="" fill sizes="(max-width: 980px) 100vw, 33vw" className="foto-bg" aria-hidden="true" />
+                  ) : null}
+                  <Image
+                    src={src}
+                    alt={`${vehiculo.nombre} ${i + 1}`}
+                    fill
+                    sizes="(max-width: 980px) 100vw, 33vw"
+                    className={isVertical ? "foto-fg" : "foto-cover"}
+                    onLoad={(event) => handleImageReady(src, event)}
+                  />
+                </div>
+                  );
+                })()}
               </SwiperSlide>
             ))}
           </Swiper>
         ) : (
-          <Image src="/img/logo-cuadrado-facebook.jpg" alt={vehiculo.nombre} width={900} height={600} />
+          (() => {
+            const fallbackSrc = "/img/logo-cuadrado-facebook.jpg";
+            const isVertical = orientacionPorSrc[fallbackSrc] === true;
+
+            return (
+              <div className="foto-stage">
+                {isVertical ? (
+                  <Image src={fallbackSrc} alt="" fill sizes="(max-width: 980px) 100vw, 33vw" className="foto-bg" aria-hidden="true" />
+                ) : null}
+                <Image
+                  src={fallbackSrc}
+                  alt={vehiculo.nombre}
+                  fill
+                  sizes="(max-width: 980px) 100vw, 33vw"
+                  className={isVertical ? "foto-fg" : "foto-cover"}
+                  onLoad={(event) => handleImageReady(fallbackSrc, event)}
+                />
+              </div>
+            );
+          })()
         )}
         {vehiculo.etiquetaPrecio ? <span className="etiqueta-precio">{vehiculo.etiquetaPrecio}</span> : null}
         {vehiculo.gnc ? (

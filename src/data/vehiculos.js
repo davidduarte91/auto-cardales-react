@@ -7,7 +7,10 @@ export const vehiculos = [
     año: 2015,
     km: "35.000 km",
     transmision: "Manual",
+    motor: "",
+    version: "",
     destacado: true,
+    mostrarEnHome: true,
     reservaDesde: "",
     gnc: false,
     imagenes: [
@@ -23,7 +26,10 @@ export const vehiculos = [
     año: 2007,
     km: "120.000 km",
     transmision: "Automática",
+    motor: "",
+    version: "",
     destacado: false,
+    mostrarEnHome: true,
     reservaDesde: "",
     gnc: false,
     imagenes: [
@@ -40,7 +46,10 @@ export const vehiculos = [
     año: 2019,
     km: "93.930 km",
     transmision: "Manual",
+    motor: "",
+    version: "",
     destacado: false,
+    mostrarEnHome: true,
     reservaDesde: "",
     gnc: false,
     imagenes: [
@@ -56,7 +65,10 @@ export const vehiculos = [
     año: 2013,
     km: "-- km",
     transmision: "--",
+    motor: "",
+    version: "",
     destacado: false,
+    mostrarEnHome: true,
     reservaDesde: "",
     gnc: false,
     imagenes: [
@@ -70,7 +82,10 @@ export const vehiculos = [
     año: 2021,
     km: "120.000 km",
     transmision: "Manual",
+    motor: "",
+    version: "",
     destacado: false,
+    mostrarEnHome: true,
     reservaDesde: "",
     gnc: false,
     imagenes: [
@@ -79,12 +94,15 @@ export const vehiculos = [
   },
   {
     id: 6,
-    nombre: "Renault Kangoo 1.6 | Nafta/Gnc",
+    nombre: "Renault Kangoo 1.6",
     precio: "US$ 8.000",
     año: 2014,
     km: "200.000 km",
     transmision: "Manual",
+    motor: "",
+    version: "",
     destacado: true,
+    mostrarEnHome: false,
     reservaDesde: "$6.000.000",
     gnc: "Nafta + GNC",
     imagenes: [
@@ -98,6 +116,37 @@ export const vehiculos = [
       "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/08-interior-atras.webp",
       "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/09-interior-delante2.webp",
       "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/10-baul.webp"
+    ]
+  },
+  {
+    id: 7,
+    nombre: "VW Gol Trend 1.6 MSI",
+    precio: "$16.400.000",
+    año: 2017,
+    km: "-- km",
+    transmision: "--",
+    motor: "1.6",
+    version: "MSI",
+    destacado: false,
+    mostrarEnHome: false,
+    reservaDesde: "$7.900.000",
+    gnc: false,
+    estadoGeneral: "Excelente estado",
+    condicionPago: "Aceptamos pagos en U$S.",
+    infoAdicional: [
+      "4 cubiertas nuevas.",
+      "2da dueña."
+    ],
+    imagenes: [
+      "/img/VW Gol Trend 1.6 MSI  Año 2017/01-frente-izquierdo.webp",
+      "/img/VW Gol Trend 1.6 MSI  Año 2017/02-frente.webp",
+      "/img/VW Gol Trend 1.6 MSI  Año 2017/03-frente-derecho.webp",
+      "/img/VW Gol Trend 1.6 MSI  Año 2017/04-atras-derecho.webp",
+      "/img/VW Gol Trend 1.6 MSI  Año 2017/05-atras.webp",
+      "/img/VW Gol Trend 1.6 MSI  Año 2017/06-atras-izquierdo.webp",
+      "/img/VW Gol Trend 1.6 MSI  Año 2017/07-interior-adelante.webp",
+      "/img/VW Gol Trend 1.6 MSI  Año 2017/08-interior-adelante2.webp",
+      "/img/VW Gol Trend 1.6 MSI  Año 2017/09-motor.webp"
     ]
   }
 ];

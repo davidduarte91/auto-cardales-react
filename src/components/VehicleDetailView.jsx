@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../app/vehiculos/[slug]/page.module.css";
@@ -11,10 +11,30 @@ export default function VehicleDetailView({ vehiculo }) {
   const nextUrl = typeof window !== "undefined" ? `${window.location.origin}/gracias` : "/gracias";
   const imagenes = vehiculo.imagenes || [];
   const totalImagenes = imagenes.length;
+  const imagenBanner = "/img/Promos/image-removebg-preview.png";
+  const motorDetectadoEnTitulo = (vehiculo.nombre.match(/\b\d(?:[.,]\d)?L?\b/i)?.[0] || "").replace(",", ".");
+  const motor = String(vehiculo.motor || motorDetectadoEnTitulo || "").trim();
+  const version = String(vehiculo.version || "").trim();
+  const estadoGeneral = String(vehiculo.estadoGeneral || "Muy buen estado general").trim();
+  const condicionPago = String(vehiculo.condicionPago || "Aceptamos pagos en pesos al tipo de cambio del día.").trim();
+  const infoAdicional = Array.isArray(vehiculo.infoAdicional)
+    ? vehiculo.infoAdicional.filter((item) => String(item || "").trim())
+    : [];
+  const tipoCombustible = vehiculo.gnc
+    ? (typeof vehiculo.gnc === "string" ? vehiculo.gnc : "GNC")
+    : "No especificado";
   const sugeridos = vehiculos.filter((item) => item.id !== vehiculo.id).slice(0, 4);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [orientacionPorSrc, setOrientacionPorSrc] = useState({});
+  const thumbRefs = useRef([]);
+  const thumbTrackRef = useRef(null);
   const imagenActiva = totalImagenes > 0 ? imagenes[activeIndex] : null;
+  const imagenActivaEsVertical = imagenActiva ? orientacionPorSrc[imagenActiva] === true : false;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
 
   useEffect(() => {
     if (totalImagenes <= 1 || isHovered) {
@@ -28,6 +48,46 @@ export default function VehicleDetailView({ vehiculo }) {
     return () => clearInterval(intervalId);
   }, [totalImagenes, isHovered]);
 
+  useEffect(() => {
+    const thumbTrack = thumbTrackRef.current;
+    const activeThumb = thumbRefs.current[activeIndex];
+    if (!thumbTrack || !activeThumb) return;
+
+    const targetLeft = activeThumb.offsetLeft - (thumbTrack.clientWidth - activeThumb.offsetWidth) / 2;
+    thumbTrack.scrollTo({
+      left: Math.max(0, targetLeft),
+      behavior: "smooth",
+    });
+  }, [activeIndex]);
+
+  useEffect(() => {
+    if (totalImagenes <= 1) return undefined;
+
+    const onKeyDown = (event) => {
+      const target = event.target;
+      if (target instanceof HTMLElement) {
+        const tagName = target.tagName;
+        if (target.isContentEditable || tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT") {
+          return;
+        }
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        setActiveIndex((current) => (current - 1 + totalImagenes) % totalImagenes);
+        return;
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        setActiveIndex((current) => (current + 1) % totalImagenes);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [totalImagenes]);
+
   const handlePrevImage = () => {
     if (totalImagenes <= 1) return;
     setActiveIndex((current) => (current - 1 + totalImagenes) % totalImagenes);
@@ -36,6 +96,49 @@ export default function VehicleDetailView({ vehiculo }) {
   const handleNextImage = () => {
     if (totalImagenes <= 1) return;
     setActiveIndex((current) => (current + 1) % totalImagenes);
+  };
+
+  const handleThumbTrackScroll = (direction) => {
+    const thumbTrack = thumbTrackRef.current;
+    if (!thumbTrack) return;
+
+    const firstThumb = thumbRefs.current[0];
+    const thumbWidth = firstThumb?.offsetWidth || 120;
+    const gap = 10;
+    const scrollAmount = (thumbWidth + gap) * 3 * direction;
+
+    thumbTrack.scrollBy({
+      left: scrollAmount,
+      behavior: "smooth",
+    });
+  };
+
+  const handleShareVehiculo = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (typeof window === "undefined") return;
+
+    const slug = slugifyVehiculoNombre(vehiculo.nombre);
+    const shareUrl = `${window.location.origin}/vehiculos/${slug}`;
+    const shareData = {
+      title: `${vehiculo.nombre} | ${vehiculo.año} | ${vehiculo.km}`,
+      text: `Mirá este vehículo: ${vehiculo.nombre} | ${vehiculo.año} | ${vehiculo.km}`,
+      url: shareUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        return;
+      }
+
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl);
+      }
+    } catch {
+      // Usuario canceló o el navegador bloqueó la acción.
+    }
   };
 
   const handleShareSugerido = async (event, item) => {
@@ -66,6 +169,17 @@ export default function VehicleDetailView({ vehiculo }) {
     }
   };
 
+  const handleMainImageReady = (src, event) => {
+    const target = event.currentTarget;
+    if (!target) return;
+
+    const isVertical = target.naturalHeight > target.naturalWidth;
+    setOrientacionPorSrc((prev) => {
+      if (prev[src] === isVertical) return prev;
+      return { ...prev, [src]: isVertical };
+    });
+  };
+
   return (
     <main className={styles.page}>
       <div className={styles.breadcrumbs}>
@@ -88,7 +202,18 @@ export default function VehicleDetailView({ vehiculo }) {
             <span>{vehiculo.transmision}</span>
           </div>
 
-          <div className={styles.price}>{vehiculo.precio}</div>
+          <div className={styles.priceRow}>
+            <div className={styles.price}>{vehiculo.precio}</div>
+            <button
+              type="button"
+              className={styles.infoShareBtn}
+              onClick={handleShareVehiculo}
+              aria-label={`Compartir ${vehiculo.nombre}`}
+              title="Compartir"
+            >
+              <i className="fa-solid fa-share-nodes" aria-hidden="true"></i>
+            </button>
+          </div>
 
           <dl className={styles.detailsGrid}>
             <div><dt>Marca:</dt><dd>{vehiculo.nombre.split(" ")[0] || "-"}</dd></div>
@@ -96,6 +221,9 @@ export default function VehicleDetailView({ vehiculo }) {
             <div><dt>Año:</dt><dd>{vehiculo.año}</dd></div>
             <div><dt>Kilometraje:</dt><dd>{vehiculo.km}</dd></div>
             <div><dt>Transmisión:</dt><dd>{vehiculo.transmision}</dd></div>
+            {motor ? <div><dt>Motor:</dt><dd>{motor}</dd></div> : null}
+            {version ? <div><dt>Versión:</dt><dd>{version}</dd></div> : null}
+            <div><dt>Combustible:</dt><dd>{tipoCombustible}</dd></div>
           </dl>
 
           <a href="#contacto" className={styles.primaryBtn}>
@@ -111,13 +239,27 @@ export default function VehicleDetailView({ vehiculo }) {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
+                {imagenActivaEsVertical ? (
+                  <Image
+                    key={`bg-${vehiculo.id}-${activeIndex}`}
+                    src={imagenActiva}
+                    alt=""
+                    fill
+                    sizes="(max-width: 980px) 100vw, 65vw"
+                    className={styles.galleryMainImageBg}
+                    aria-hidden="true"
+                    priority
+                  />
+                ) : null}
                 <Image
-                  key={`${vehiculo.id}-${activeIndex}`}
+                  key={`fg-${vehiculo.id}-${activeIndex}`}
                   src={imagenActiva}
                   alt={`Foto principal de ${vehiculo.nombre}`}
                   fill
                   sizes="(max-width: 980px) 100vw, 65vw"
                   className={styles.galleryMainImage}
+                  style={{ objectFit: imagenActivaEsVertical ? "contain" : "cover" }}
+                  onLoad={(event) => handleMainImageReady(imagenActiva, event)}
                   priority
                 />
 
@@ -144,24 +286,49 @@ export default function VehicleDetailView({ vehiculo }) {
               </div>
 
               {imagenes.length > 0 ? (
-                <div className={styles.thumbGrid}>
-                  {imagenes.map((src, index) => (
-                    <button
-                      key={`${vehiculo.id}-${index}`}
-                      type="button"
-                      className={`${styles.thumbButton} ${activeIndex === index ? styles.thumbActive : ""}`.trim()}
-                      onClick={() => setActiveIndex(index)}
-                      aria-label={`Ver foto ${index + 1} de ${vehiculo.nombre}`}
-                    >
-                      <Image
-                        src={src}
-                        alt={`Miniatura ${index + 1} de ${vehiculo.nombre}`}
-                        fill
-                        sizes="120px"
-                        className={styles.thumbImage}
-                      />
-                    </button>
-                  ))}
+                <div className={styles.thumbCarousel}>
+                  <button
+                    type="button"
+                    className={styles.thumbNavButton}
+                    onClick={() => handleThumbTrackScroll(-1)}
+                    aria-label="Desplazar miniaturas hacia la izquierda"
+                    disabled={totalImagenes <= 1}
+                  >
+                    <i className="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                  </button>
+
+                  <div ref={thumbTrackRef} className={styles.thumbGrid}>
+                    {imagenes.map((src, index) => (
+                      <button
+                        key={`${vehiculo.id}-${index}`}
+                        type="button"
+                        ref={(node) => {
+                          thumbRefs.current[index] = node;
+                        }}
+                        className={`${styles.thumbButton} ${activeIndex === index ? styles.thumbActive : ""}`.trim()}
+                        onClick={() => setActiveIndex(index)}
+                        aria-label={`Ver foto ${index + 1} de ${vehiculo.nombre}`}
+                      >
+                        <Image
+                          src={src}
+                          alt={`Miniatura ${index + 1} de ${vehiculo.nombre}`}
+                          fill
+                          sizes="120px"
+                          className={styles.thumbImage}
+                        />
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    className={styles.thumbNavButton}
+                    onClick={() => handleThumbTrackScroll(1)}
+                    aria-label="Desplazar miniaturas hacia la derecha"
+                    disabled={totalImagenes <= 1}
+                  >
+                    <i className="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                  </button>
                 </div>
               ) : null}
             </>
@@ -172,7 +339,62 @@ export default function VehicleDetailView({ vehiculo }) {
               <p>Estamos cargando imágenes para este vehículo.</p>
             </div>
           )}
+
+          <section className={styles.financiacionBanner} aria-label="Opciones de financiacion">
+            <div className={styles.financiacionTextCol}>
+              <h2>¿Querés financiar este vehículo?</h2>
+              <p>
+                Si no contás con el total del valor, te acompañamos con opciones de pago para que puedas
+                llegar a tu próximo auto.
+              </p>
+              <a href="#contacto" className={styles.financiacionBtn}>
+                Consultanos aquí
+              </a>
+            </div>
+
+            <div className={styles.financiacionImageCol}>
+              <Image
+                src={imagenBanner}
+                alt={`Financiación disponible para ${vehiculo.nombre}`}
+                fill
+                sizes="(max-width: 980px) 100vw, 35vw"
+                className={styles.financiacionImage}
+              />
+            </div>
+          </section>
         </section>
+      </section>
+
+      <section className={styles.masInfoSection} aria-label="Más información del vehículo y la empresa">
+        <h2>Más información</h2>
+
+        <div className={styles.masInfoGrid}>
+          <article className={styles.masInfoCard}>
+            <ul>
+              <li><strong>{estadoGeneral}.</strong></li>
+              {infoAdicional.map((item, index) => (
+                <li key={`info-adicional-${index}`}>{item}</li>
+              ))}
+              {tipoCombustible !== "No especificado" ? <li><strong>Combustible:</strong> {tipoCombustible}</li> : null}
+              <li><strong>Precio:</strong> {vehiculo.precio}</li>
+              {vehiculo.reservaDesde ? <li><strong>Entrega desde:</strong> {vehiculo.reservaDesde}</li> : null}
+              <li><strong>Condición de pago:</strong> {condicionPago}</li>
+              <li><strong>Financiación disponible:</strong> créditos prendarios bancarios sujetos a aprobación.</li>
+              <li><strong>Aceptamos permutas.</strong></li>
+            </ul>
+          </article>
+
+          <article className={styles.masInfoCard}>
+            <ul>
+              <li><strong>Más de 10 años en el rubro.</strong></li>
+              <li><strong>Gestoría propia matriculada</strong> para una operación más ágil.</li>
+              <li><strong>Compra segura y transparente</strong> en todas las operaciones.</li>
+              <li><strong>Transferencia obligatoria</strong> para respaldo legal de ambas partes.</li>
+              <li><strong>Local físico en Los Cardales</strong> para atención personalizada.</li>
+              <li>También podés encontrarnos en nuestras redes sociales.</li>
+            </ul>
+          </article>
+        </div>
       </section>
 
       <section id="ubicacion" className={styles.consultaSection}>
@@ -211,7 +433,7 @@ export default function VehicleDetailView({ vehiculo }) {
 
             <div className={styles.submitWrap}>
               <button type="submit" className={styles.submitBtn}>
-                <span>¡Enviar!</span>
+                <span>Enviar</span>
                 <i className="fa-solid fa-paper-plane" aria-hidden="true"></i>
               </button>
             </div>
@@ -223,7 +445,7 @@ export default function VehicleDetailView({ vehiculo }) {
           <h3>Dónde estamos</h3>
           <p>Sargento Cabral 357<br />Los Cardales</p>
 
-          <div className={styles.consultaTelefono}>011 5607-4949</div>
+          <div className={styles.consultaTelefono}>11 5607-4949</div>
           <div className={styles.consultaMail}>autocardales@gmail.com</div>
 
           <div className={styles.consultaSeguinos}>

@@ -13,7 +13,7 @@ export default function Page(){
       <Header />
       <main>
         <HeroSection />
-        <VehicleGrid />
+        <VehicleGrid onlyHomeSelection={true} />
         <WhyChooseUs />
         <LocationSection />
       </main>
