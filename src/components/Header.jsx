@@ -1,10 +1,12 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const headerRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const header = headerRef.current;
@@ -54,10 +56,19 @@ export default function Header() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  const handleLogoClick = (event) => {
+    closeMenu();
+
+    if (pathname === "/") {
+      event.preventDefault();
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <header ref={headerRef} className={menuOpen ? "menu-open" : ""}>
       <div className="logo">
-        <Link href="/">
+        <Link href="/" onClick={handleLogoClick}>
           <img
             src="/img/logo-cuadrado-facebook-removebg-preview.png"
             alt="Logo Auto Cardales"

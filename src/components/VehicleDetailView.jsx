@@ -20,16 +20,25 @@ export default function VehicleDetailView({ vehiculo }) {
   const infoAdicional = Array.isArray(vehiculo.infoAdicional)
     ? vehiculo.infoAdicional.filter((item) => String(item || "").trim())
     : [];
-  const tipoCombustible = vehiculo.gnc
-    ? (typeof vehiculo.gnc === "string" ? vehiculo.gnc : "GNC")
-    : "No especificado";
+  const hasPermutasEnInfoAdicional = infoAdicional.some((item) => /permut/i.test(String(item)));
+  const tieneGNC = vehiculo.gnc === true || (typeof vehiculo.gnc === "string" && /gnc/i.test(vehiculo.gnc));
+  const combustibleSinGNC = typeof vehiculo.combustible === "string"
+    ? vehiculo.combustible.trim()
+    : (typeof vehiculo.gnc === "string" && !/gnc/i.test(vehiculo.gnc) ? vehiculo.gnc.trim() : "");
+  const tipoCombustible = tieneGNC ? "Nafta/GNC" : (combustibleSinGNC || "No especificado");
   const isReservado = Boolean(vehiculo.reservado);
-  const sugeridos = vehiculos.filter((item) => item.id !== vehiculo.id).slice(0, 4);
+  const sugeridos = vehiculos
+    .filter((item) => item.id !== vehiculo.id)
+    .sort((a, b) => Number(Boolean(a.reservado)) - Number(Boolean(b.reservado)))
+    .slice(0, 4);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isTouchHoldingThumb, setIsTouchHoldingThumb] = useState(false);
   const [orientacionPorSrc, setOrientacionPorSrc] = useState({});
   const thumbRefs = useRef([]);
   const thumbTrackRef = useRef(null);
+  const touchStartXRef = useRef(null);
+  const touchStartYRef = useRef(null);
   const imagenActiva = totalImagenes > 0 ? imagenes[activeIndex] : null;
   const imagenActivaEsVertical = imagenActiva ? orientacionPorSrc[imagenActiva] === true : false;
 
@@ -38,7 +47,7 @@ export default function VehicleDetailView({ vehiculo }) {
   }, []);
 
   useEffect(() => {
-    if (totalImagenes <= 1 || isHovered) {
+    if (totalImagenes <= 1 || isHovered || isTouchHoldingThumb) {
       return undefined;
     }
 
@@ -47,7 +56,7 @@ export default function VehicleDetailView({ vehiculo }) {
     }, 3000);
 
     return () => clearInterval(intervalId);
-  }, [totalImagenes, isHovered]);
+  }, [totalImagenes, isHovered, isTouchHoldingThumb]);
 
   useEffect(() => {
     const thumbTrack = thumbTrackRef.current;
@@ -99,19 +108,35 @@ export default function VehicleDetailView({ vehiculo }) {
     setActiveIndex((current) => (current + 1) % totalImagenes);
   };
 
-  const handleThumbTrackScroll = (direction) => {
-    const thumbTrack = thumbTrackRef.current;
-    if (!thumbTrack) return;
+  const handleMainTouchStart = (event) => {
+    const touch = event.changedTouches?.[0];
+    if (!touch) return;
+    touchStartXRef.current = touch.clientX;
+    touchStartYRef.current = touch.clientY;
+  };
 
-    const firstThumb = thumbRefs.current[0];
-    const thumbWidth = firstThumb?.offsetWidth || 120;
-    const gap = 10;
-    const scrollAmount = (thumbWidth + gap) * 3 * direction;
+  const handleMainTouchEnd = (event) => {
+    const touch = event.changedTouches?.[0];
+    const startX = touchStartXRef.current;
+    const startY = touchStartYRef.current;
 
-    thumbTrack.scrollBy({
-      left: scrollAmount,
-      behavior: "smooth",
-    });
+    touchStartXRef.current = null;
+    touchStartYRef.current = null;
+
+    if (!touch || startX === null || startY === null || totalImagenes <= 1) return;
+
+    const deltaX = touch.clientX - startX;
+    const deltaY = touch.clientY - startY;
+    const minSwipe = 36;
+
+    if (Math.abs(deltaX) < minSwipe || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+
+    if (deltaX > 0) {
+      handlePrevImage();
+      return;
+    }
+
+    handleNextImage();
   };
 
   const handleShareVehiculo = async (event) => {
@@ -181,15 +206,46 @@ export default function VehicleDetailView({ vehiculo }) {
     });
   };
 
+  const renderFinanciacionBanner = (extraClassName = "") => (
+    <section className={`${styles.financiacionBanner} ${extraClassName}`.trim()} aria-label="Opciones de financiacion">
+      <div className={styles.financiacionTextCol}>
+        <h2>¿Querés financiar este vehículo?</h2>
+        <p>
+          Si no contás con el total del valor, te acompañamos con opciones de pago para que puedas
+          llegar a tu próximo auto.
+        </p>
+        {isReservado ? (
+          <Link href="/vehiculos-disponibles" className={styles.financiacionBtn}>
+            Vehículo Reservado -&gt; Ver similares
+          </Link>
+        ) : (
+          <a href="#contacto" className={styles.financiacionBtn}>
+            Consultanos aquí
+          </a>
+        )}
+      </div>
+
+      <div className={styles.financiacionImageCol}>
+        <Image
+          src={imagenBanner}
+          alt={`Financiación disponible para ${vehiculo.nombre}`}
+          fill
+          sizes="(max-width: 980px) 100vw, 35vw"
+          className={styles.financiacionImage}
+        />
+      </div>
+    </section>
+  );
+
   return (
     <main className={styles.page}>
-      <div className={styles.breadcrumbs}>
-        <Link href="/">Home</Link>
-        <span>•</span>
-        <Link href="/vehiculos-disponibles">Vehículos disponibles</Link>
-        <span>•</span>
-        <span>{vehiculo.nombre}</span>
-      </div>
+      <nav className={styles.breadcrumbs} aria-label="Navegación de rutas">
+        <Link href="/" className={styles.breadcrumbLink}>Home</Link>
+        <span className={styles.breadcrumbSep} aria-hidden="true">•</span>
+        <Link href="/vehiculos-disponibles" className={styles.breadcrumbLink}>Vehículos disponibles</Link>
+        <span className={styles.breadcrumbSep} aria-hidden="true">•</span>
+        <span className={styles.breadcrumbCurrent}>{vehiculo.nombre}</span>
+      </nav>
 
       <section className={styles.layout}>
         <aside className={styles.infoCol}>
@@ -229,6 +285,7 @@ export default function VehicleDetailView({ vehiculo }) {
             {motor ? <div><dt>Motor:</dt><dd>{motor}</dd></div> : null}
             {version ? <div><dt>Versión:</dt><dd>{version}</dd></div> : null}
             <div><dt>Combustible:</dt><dd>{tipoCombustible}</dd></div>
+            {vehiculo.reservaDesde ? <div><dt>Entrega desde:</dt><dd>{vehiculo.reservaDesde}</dd></div> : null}
           </dl>
 
           {isReservado ? (
@@ -249,6 +306,8 @@ export default function VehicleDetailView({ vehiculo }) {
                 className={styles.galleryMainImageWrap}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
+                onTouchStart={handleMainTouchStart}
+                onTouchEnd={handleMainTouchEnd}
               >
                 {imagenActivaEsVertical ? (
                   <Image
@@ -301,7 +360,7 @@ export default function VehicleDetailView({ vehiculo }) {
                   <button
                     type="button"
                     className={styles.thumbNavButton}
-                    onClick={() => handleThumbTrackScroll(-1)}
+                    onClick={handlePrevImage}
                     aria-label="Desplazar miniaturas hacia la izquierda"
                     disabled={totalImagenes <= 1}
                   >
@@ -318,6 +377,12 @@ export default function VehicleDetailView({ vehiculo }) {
                         }}
                         className={`${styles.thumbButton} ${activeIndex === index ? styles.thumbActive : ""}`.trim()}
                         onClick={() => setActiveIndex(index)}
+                        onTouchStart={() => {
+                          setActiveIndex(index);
+                          setIsTouchHoldingThumb(true);
+                        }}
+                        onTouchEnd={() => setIsTouchHoldingThumb(false)}
+                        onTouchCancel={() => setIsTouchHoldingThumb(false)}
                         aria-label={`Ver foto ${index + 1} de ${vehiculo.nombre}`}
                       >
                         <Image
@@ -334,7 +399,7 @@ export default function VehicleDetailView({ vehiculo }) {
                   <button
                     type="button"
                     className={styles.thumbNavButton}
-                    onClick={() => handleThumbTrackScroll(1)}
+                    onClick={handleNextImage}
                     aria-label="Desplazar miniaturas hacia la derecha"
                     disabled={totalImagenes <= 1}
                   >
@@ -351,34 +416,7 @@ export default function VehicleDetailView({ vehiculo }) {
             </div>
           )}
 
-          <section className={styles.financiacionBanner} aria-label="Opciones de financiacion">
-            <div className={styles.financiacionTextCol}>
-              <h2>¿Querés financiar este vehículo?</h2>
-              <p>
-                Si no contás con el total del valor, te acompañamos con opciones de pago para que puedas
-                llegar a tu próximo auto.
-              </p>
-              {isReservado ? (
-                <Link href="/vehiculos-disponibles" className={styles.financiacionBtn}>
-                  Vehículo Reservado -&gt; Ver similares
-                </Link>
-              ) : (
-                <a href="#contacto" className={styles.financiacionBtn}>
-                  Consultanos aquí
-                </a>
-              )}
-            </div>
-
-            <div className={styles.financiacionImageCol}>
-              <Image
-                src={imagenBanner}
-                alt={`Financiación disponible para ${vehiculo.nombre}`}
-                fill
-                sizes="(max-width: 980px) 100vw, 35vw"
-                className={styles.financiacionImage}
-              />
-            </div>
-          </section>
+          {renderFinanciacionBanner(styles.financiacionDesktop)}
         </section>
       </section>
 
@@ -392,12 +430,11 @@ export default function VehicleDetailView({ vehiculo }) {
               {infoAdicional.map((item, index) => (
                 <li key={`info-adicional-${index}`}>{item}</li>
               ))}
-              {tipoCombustible !== "No especificado" ? <li><strong>Combustible:</strong> {tipoCombustible}</li> : null}
               <li><strong>Precio:</strong> {vehiculo.precio}</li>
               {vehiculo.reservaDesde ? <li><strong>Entrega desde:</strong> {vehiculo.reservaDesde}</li> : null}
               <li><strong>Condición de pago:</strong> {condicionPago}</li>
               <li><strong>Financiación disponible:</strong> créditos prendarios bancarios sujetos a aprobación.</li>
-              <li><strong>Aceptamos permutas.</strong></li>
+              {!hasPermutasEnInfoAdicional ? <li><strong>Aceptamos permutas.</strong></li> : null}
             </ul>
           </article>
 
@@ -413,6 +450,8 @@ export default function VehicleDetailView({ vehiculo }) {
           </article>
         </div>
       </section>
+
+      {renderFinanciacionBanner(styles.financiacionMobile)}
 
       <section id="ubicacion" className={styles.consultaSection}>
         <div id="contacto" className={styles.consultaFormCol}>
@@ -509,6 +548,7 @@ export default function VehicleDetailView({ vehiculo }) {
                     sizes="(max-width: 980px) 100vw, 25vw"
                     className={styles.sugeridoImage}
                   />
+                  {item.reservado ? <span className={styles.sugeridoReservado}>Reservado</span> : null}
                 </Link>
 
                 <div className={styles.sugeridoBody}>

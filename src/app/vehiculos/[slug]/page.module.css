@@ -7,15 +7,35 @@
 .breadcrumbs {
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	font-size: 15px;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	gap: 6px 10px;
+	font-size: 14px;
 	margin-bottom: 14px;
 	color: #475569;
 }
 
-.breadcrumbs a {
+.breadcrumbLink {
 	color: #1d4ed8;
 	text-decoration: none;
+	font-weight: 500;
+}
+
+.breadcrumbLink:hover,
+.breadcrumbLink:focus-visible {
+	text-decoration: underline;
+}
+
+.breadcrumbCurrent {
+	color: #0f172a;
+	font-weight: 500;
+}
+
+.breadcrumbSep {
+	color: #94a3b8;
+	font-size: 12px;
+	line-height: 1;
+	user-select: none;
 }
 
 .layout {
@@ -332,6 +352,14 @@
 	min-height: 190px;
 }
 
+.financiacionDesktop {
+	display: grid;
+}
+
+.financiacionMobile {
+	display: none;
+}
+
 .financiacionTextCol {
 	padding: 24px;
 	display: flex;
@@ -646,6 +674,25 @@
 	overflow: hidden;
 }
 
+.sugeridoReservado {
+	position: absolute;
+	top: 16px;
+	left: -42px;
+	width: 164px;
+	text-align: center;
+	transform: rotate(-40deg);
+	background: linear-gradient(180deg, #dcc47b 0%, #caa64d 100%);
+	color: #1f2937;
+	font-weight: 800;
+	font-size: 13px;
+	text-transform: uppercase;
+	letter-spacing: 1.3px;
+	padding: 6px 8px;
+	box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+	z-index: 3;
+	pointer-events: none;
+}
+
 .sugeridoImage {
 	object-fit: cover;
 	transition: transform 0.25s ease;
@@ -908,6 +955,83 @@
 }
 
 @media (max-width: 640px) {
+	.financiacionDesktop {
+		display: none;
+	}
+
+	.financiacionMobile {
+		display: grid;
+		margin-top: 16px;
+	}
+
+	.financiacionTextCol {
+		position: relative;
+		z-index: 2;
+	}
+
+	.financiacionImageCol {
+		min-height: 150px;
+		margin-top: -54px;
+		position: relative;
+		z-index: 1;
+	}
+
+	.financiacionImage {
+		object-position: center 18px;
+	}
+
+	.breadcrumbs {
+		display: grid;
+		grid-template-columns: auto auto auto auto minmax(0, 1fr);
+		align-items: center;
+		justify-content: start;
+		column-gap: 6px;
+		font-size: 12px;
+	}
+
+	.breadcrumbs > * {
+		align-self: center;
+	}
+
+	.breadcrumbs > a:first-of-type {
+		white-space: nowrap;
+	}
+
+	.breadcrumbs > a:nth-of-type(2) {
+		display: inline-flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		max-width: 72px;
+		white-space: normal;
+		text-align: center;
+		line-height: 1.05;
+	}
+
+	.breadcrumbCurrent {
+		display: inline-flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		max-width: 92px;
+		white-space: normal;
+		text-align: center;
+		line-height: 1.05;
+		overflow: hidden;
+		line-clamp: 3;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+
+	.breadcrumbSep {
+		align-self: center;
+		font-size: 11px;
+	}
+
+	.navButton {
+		display: none;
+	}
+
 	.financiacionTextCol h2 {
 		font-size: 19px;
 	}

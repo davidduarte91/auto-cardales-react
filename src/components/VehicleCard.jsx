@@ -12,6 +12,7 @@ import 'swiper/css/effect-fade';
 export default function VehicleCard({ vehiculo, href, showReservedBanner = false }) {
   const router = useRouter();
   const tieneVariasImagenes = vehiculo.imagenes && vehiculo.imagenes.length > 1;
+  const tieneGNC = vehiculo.gnc === true || (typeof vehiculo.gnc === "string" && /gnc/i.test(vehiculo.gnc));
   const [orientacionPorSrc, setOrientacionPorSrc] = useState({});
 
   const handleImageReady = (src, event) => {
@@ -140,9 +141,9 @@ export default function VehicleCard({ vehiculo, href, showReservedBanner = false
           <span className="etiqueta-reservado">Reservado</span>
         ) : null}
         {vehiculo.etiquetaPrecio ? <span className="etiqueta-precio">{vehiculo.etiquetaPrecio}</span> : null}
-        {vehiculo.gnc ? (
+        {tieneGNC ? (
           <span className="etiqueta-gnc">
-            {typeof vehiculo.gnc === "string" ? vehiculo.gnc : "GNC"}
+            GNC
           </span>
         ) : null}
       </div>

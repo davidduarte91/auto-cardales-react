@@ -51,7 +51,11 @@ export default function HeroSection() {
         ))}
       </div>
       <div className="hero-content">
-        <h1 className="hero-title">Compra y Venta<br />Consignación<br />Permutas y Gestoría</h1>
+        <h1 className="hero-title">
+          <span className="hero-title-line">Compra y Venta</span>
+          <span className="hero-title-line">Consignación</span>
+          <span className="hero-title-line">Permutas y Gestoría</span>
+        </h1>
         <div className="hero-buttons">
           <button className="hero-btn comprar-btn" onClick={handleComprar}>
             <i className="fas fa-shopping-cart"></i> Comprar

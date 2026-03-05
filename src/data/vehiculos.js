@@ -29,7 +29,7 @@ export const vehiculos = [
     id: 2,
     nombre: "Toyota Hilux 4X4",
     reservado: true,
-    precio: "$34.990.000",
+    precio: "$ 34.990.000",
     año: 2007,
     km: "120.000 km",
     transmision: "Automática",
@@ -48,7 +48,7 @@ export const vehiculos = [
   {
     id: 3,
     nombre: "VW Gol Trend 1.6",
-    precio: "$15.000.000",
+    precio: "$ 15.000.000",
     año: 2019,
     km: "93.930 km",
     transmision: "Manual",
@@ -59,15 +59,15 @@ export const vehiculos = [
     reservaDesde: "",
     gnc: false,
     imagenes: [
-      "/img/VW Gol Trend 1.6  Año 2019/frente.jpg",
-      "/img/VW Gol Trend 1.6  Año 2019/frente-costado-derecho.jpg",
-      "/img/VW Gol Trend 1.6  Año 2019/frente-costado-izquierdo.jpg"
+      "/img/VW Gol Trend 1.6  Año 2019/01-frente-izquierda.webp",
+      "/img/VW Gol Trend 1.6  Año 2019/02-frente.webp",
+      "/img/VW Gol Trend 1.6  Año 2019/03-frente-derecha.webp"
     ]
   },
   {
     id: 4,
     nombre: "VW Bora 2.0L",
-    precio: "US$10.000",
+    precio: "US$ 10.000",
     año: 2013,
     km: "-- km",
     transmision: "--",
@@ -78,7 +78,10 @@ export const vehiculos = [
     reservaDesde: "",
     gnc: false,
     imagenes: [
-      "/img/VW Bora 2.0L  Año 2013/frente izquierdo.jpg"
+      "/img/VW Bora 2.0L  Año 2013/01-frente-derecha.webp",
+      "/img/VW Bora 2.0L  Año 2013/02-frente.webp",
+      "/img/VW Bora 2.0L  Año 2013/03-frente-izquierda.webp",
+      "/img/VW Bora 2.0L  Año 2013/04-atras-derecha.webp"
     ]
   },
   {
@@ -95,7 +98,9 @@ export const vehiculos = [
     reservaDesde: "",
     gnc: false,
     imagenes: [
-      "/img/Chevrolet Onix Black Edition 1.4   Año 2021/frente-izquierdo.jpg"
+      "/img/Chevrolet Onix Black Edition 1.4   Año 2021/01-frente-izquierda.webp",
+      "/img/Chevrolet Onix Black Edition 1.4   Año 2021/02-frente.webp",
+      "/img/Chevrolet Onix Black Edition 1.4   Año 2021/03-frente-izquierda.webp"
     ]
   },
   {
@@ -109,7 +114,7 @@ export const vehiculos = [
     version: "",
     destacado: true,
     mostrarEnHome: false,
-    reservaDesde: "$6.000.000",
+    reservaDesde: "$ 6.000.000",
     gnc: "Nafta + GNC",
     imagenes: [
       "/img/Renault Kangoo 1.6 Nafta GNC  Año 2014/01-frente-izquierdo.webp",
@@ -127,7 +132,7 @@ export const vehiculos = [
   {
     id: 7,
     nombre: "VW Gol Trend 1.6 MSI",
-    precio: "$16.400.000",
+    precio: "$ 16.400.000",
     año: 2017,
     km: "-- km",
     transmision: "--",
@@ -135,7 +140,7 @@ export const vehiculos = [
     version: "MSI",
     destacado: false,
     mostrarEnHome: false,
-    reservaDesde: "$7.900.000",
+    reservaDesde: "$ 7.900.000",
     gnc: false,
     estadoGeneral: "Excelente estado",
     condicionPago: "Aceptamos pagos en U$S.",
@@ -153,6 +158,38 @@ export const vehiculos = [
       "/img/VW Gol Trend 1.6 MSI  Año 2017/07-interior-adelante.webp",
       "/img/VW Gol Trend 1.6 MSI  Año 2017/08-interior-adelante2.webp",
       "/img/VW Gol Trend 1.6 MSI  Año 2017/09-motor.webp"
+    ]
+  },
+  {
+    id: 8,
+    nombre: "Ford Fiesta 1.6 S Nafta",
+    precio: "$ 14.200.000",
+    año: 2014,
+    km: "-- km",
+    transmision: "--",
+    motor: "1.6",
+    version: "S",
+    destacado: false,
+    mostrarEnHome: false,
+    reservaDesde: "$ 8.200.000",
+    gnc: false,
+    combustible: "Nafta",
+    estadoGeneral: "Excelente estado",
+    condicionPago: "Aceptamos pagos en U$S.",
+    infoAdicional: [
+      "Cubiertas nuevas.",
+      "Aceptamos permutas."
+    ],
+    imagenes: [
+      "/img/Ford Fiesta 1.6 S Nafta  Año 2014/01-frente-izquierda.webp",
+      "/img/Ford Fiesta 1.6 S Nafta  Año 2014/02-frente.webp",
+      "/img/Ford Fiesta 1.6 S Nafta  Año 2014/03-frente-derecha.webp",
+      "/img/Ford Fiesta 1.6 S Nafta  Año 2014/04-atras-derecha.webp",
+      "/img/Ford Fiesta 1.6 S Nafta  Año 2014/05-atras-derecha.webp",
+      "/img/Ford Fiesta 1.6 S Nafta  Año 2014/06-atras.webp",
+      "/img/Ford Fiesta 1.6 S Nafta  Año 2014/07-motor.webp",
+      "/img/Ford Fiesta 1.6 S Nafta  Año 2014/08-motor.webp",
+      "/img/Ford Fiesta 1.6 S Nafta  Año 2014/09-interior-adelante.webp"
     ]
   }
 ];

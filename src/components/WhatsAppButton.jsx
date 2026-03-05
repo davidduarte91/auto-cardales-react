@@ -1,12 +1,13 @@
 import React from "react";
 
-export default function WhatsAppButton(){
+export default function WhatsAppButton({ message }){
   const num = "5491156074949";
-  const message = "Hola, me gustaría hacer una consulta sobre los autos disponibles.";
+  const defaultMessage = "Hola, me gustaría hacer una consulta sobre los autos disponibles.";
+  const whatsappMessage = String(message || defaultMessage);
   return (
     <a
       className="whatsapp-flotante"
-      href={`https://wa.me/${num}?text=${encodeURIComponent(message)}`}
+      href={`https://wa.me/${num}?text=${encodeURIComponent(whatsappMessage)}`}
       target="_blank"
       rel="noopener noreferrer"
       title="Contactanos por WhatsApp"
