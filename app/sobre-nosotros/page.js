@@ -1,1 +1,3 @@
-export { default } from "../../src/app/sobre-nosotros/page";
+import SobreNosotrosPage from "../../src/app/sobre-nosotros/page";
+
+export default SobreNosotrosPage;

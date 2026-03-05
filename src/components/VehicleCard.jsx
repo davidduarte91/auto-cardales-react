@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
-export default function VehicleCard({ vehiculo, href }) {
+export default function VehicleCard({ vehiculo, href, showReservedBanner = false }) {
   const router = useRouter();
   const tieneVariasImagenes = vehiculo.imagenes && vehiculo.imagenes.length > 1;
   const [orientacionPorSrc, setOrientacionPorSrc] = useState({});
@@ -136,6 +136,9 @@ export default function VehicleCard({ vehiculo, href }) {
             );
           })()
         )}
+        {showReservedBanner && vehiculo.reservado ? (
+          <span className="etiqueta-reservado">Reservado</span>
+        ) : null}
         {vehiculo.etiquetaPrecio ? <span className="etiqueta-precio">{vehiculo.etiquetaPrecio}</span> : null}
         {vehiculo.gnc ? (
           <span className="etiqueta-gnc">

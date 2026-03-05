@@ -12,6 +12,7 @@ export default function VehicleGrid({
   uniformCards = false,
   gridClassName = "",
   onlyHomeSelection = false,
+  showReservedBanner = false,
 }) {
   const vehiculosParaMostrar = onlyHomeSelection
     ? vehiculos.filter((v) => v.mostrarEnHome)
@@ -23,7 +24,14 @@ export default function VehicleGrid({
       <div className={`grilla-vehiculos ${gridClassName}`.trim()}>
         {vehiculosParaMostrar.map((v) => {
           const vehiculoCard = uniformCards ? { ...v, destacado: false } : v;
-          return <VehicleCard key={v.id} vehiculo={vehiculoCard} href={`/vehiculos/${slugifyVehiculoNombre(v.nombre)}`} />;
+          return (
+            <VehicleCard
+              key={v.id}
+              vehiculo={vehiculoCard}
+              href={`/vehiculos/${slugifyVehiculoNombre(v.nombre)}`}
+              showReservedBanner={showReservedBanner}
+            />
+          );
         })}
       </div>
       {showCta && (

@@ -50,6 +50,22 @@
 	margin-bottom: 14px;
 }
 
+.statusBadgeReservado {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 6px 12px;
+	border-radius: 999px;
+	background: linear-gradient(180deg, #dcc47b 0%, #caa64d 100%);
+	color: #1f2937;
+	font-size: 13px;
+	font-weight: 800;
+	letter-spacing: 1.2px;
+	text-transform: uppercase;
+	margin-bottom: 12px;
+	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
 .priceRow {
 	display: flex;
 	align-items: center;
@@ -832,6 +848,12 @@
 
 	.infoCol h1 {
 		font-size: 30px;
+	}
+
+	.statusBadgeReservado {
+		font-size: 12px;
+		padding: 5px 10px;
+		margin-bottom: 10px;
 	}
 
 	.price {

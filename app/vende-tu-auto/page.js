@@ -1,1 +1,3 @@
-export { default } from "../../src/app/vende-tu-auto/page";
+import VendeTuAutoPage from "../../src/app/vende-tu-auto/page";
+
+export default VendeTuAutoPage;

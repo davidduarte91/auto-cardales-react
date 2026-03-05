@@ -23,6 +23,7 @@ export default function VehicleDetailView({ vehiculo }) {
   const tipoCombustible = vehiculo.gnc
     ? (typeof vehiculo.gnc === "string" ? vehiculo.gnc : "GNC")
     : "No especificado";
+  const isReservado = Boolean(vehiculo.reservado);
   const sugeridos = vehiculos.filter((item) => item.id !== vehiculo.id).slice(0, 4);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -202,6 +203,10 @@ export default function VehicleDetailView({ vehiculo }) {
             <span>{vehiculo.transmision}</span>
           </div>
 
+          {vehiculo.reservado ? (
+            <div className={styles.statusBadgeReservado}>Reservado</div>
+          ) : null}
+
           <div className={styles.priceRow}>
             <div className={styles.price}>{vehiculo.precio}</div>
             <button
@@ -226,9 +231,15 @@ export default function VehicleDetailView({ vehiculo }) {
             <div><dt>Combustible:</dt><dd>{tipoCombustible}</dd></div>
           </dl>
 
-          <a href="#contacto" className={styles.primaryBtn}>
-            Quiero consultar o agendar una visita <i className="fa-solid fa-arrow-right"></i>
-          </a>
+          {isReservado ? (
+            <Link href="/vehiculos-disponibles" className={styles.primaryBtn}>
+              Vehículo Reservado -&gt; Ver similares <i className="fa-solid fa-arrow-right"></i>
+            </Link>
+          ) : (
+            <a href="#contacto" className={styles.primaryBtn}>
+              Quiero consultar o agendar una visita <i className="fa-solid fa-arrow-right"></i>
+            </a>
+          )}
         </aside>
 
         <section className={styles.galleryCol}>
@@ -347,9 +358,15 @@ export default function VehicleDetailView({ vehiculo }) {
                 Si no contás con el total del valor, te acompañamos con opciones de pago para que puedas
                 llegar a tu próximo auto.
               </p>
-              <a href="#contacto" className={styles.financiacionBtn}>
-                Consultanos aquí
-              </a>
+              {isReservado ? (
+                <Link href="/vehiculos-disponibles" className={styles.financiacionBtn}>
+                  Vehículo Reservado -&gt; Ver similares
+                </Link>
+              ) : (
+                <a href="#contacto" className={styles.financiacionBtn}>
+                  Consultanos aquí
+                </a>
+              )}
             </div>
 
             <div className={styles.financiacionImageCol}>
@@ -399,14 +416,26 @@ export default function VehicleDetailView({ vehiculo }) {
 
       <section id="ubicacion" className={styles.consultaSection}>
         <div id="contacto" className={styles.consultaFormCol}>
-          <h3>¡Quiero consultar o agendar una visita por este vehículo!</h3>
+          <h3>
+            {isReservado
+              ? "¡Quiero consultar por vehiculos similares a este!"
+              : "¡Quiero consultar o agendar una visita por este vehículo!"}
+          </h3>
 
           <form
             className={styles.consultaForm}
             action="https://formsubmit.co/david.duarte329@gmail.com"
             method="POST"
           >
-            <input type="hidden" name="_subject" value={`Consulta por vehículo: ${vehiculo.nombre}`} />
+            <input
+              type="hidden"
+              name="_subject"
+              value={
+                isReservado
+                  ? `Consulta por similares de vehículo reservado: ${vehiculo.nombre}`
+                  : `Consulta por vehículo: ${vehiculo.nombre}`
+              }
+            />
             <input type="hidden" name="_next" value={nextUrl} />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_template" value="table" />
@@ -427,7 +456,11 @@ export default function VehicleDetailView({ vehiculo }) {
             <textarea
               name="mensaje"
               rows={6}
-              placeholder="Escribinos tu consulta aquí y nos pondremos en contacto lo más pronto posible."
+              placeholder={
+                isReservado
+                  ? "Contanos que tipo de vehiculo estas buscando y te mostramos opciones similares disponibles."
+                  : "Escribinos tu consulta aquí y nos pondremos en contacto lo más pronto posible."
+              }
               required
             ></textarea>
 

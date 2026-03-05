@@ -1,1 +1,3 @@
-export { default } from "../../src/app/vehiculos/page";
+import VehiculosIndexPage from "../../src/app/vehiculos/page";
+
+export default VehiculosIndexPage;

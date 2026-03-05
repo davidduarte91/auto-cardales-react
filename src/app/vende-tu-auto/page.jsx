@@ -39,7 +39,7 @@ export default function VendeTuAutoPage() {
 
           <div className={styles.heroImageCol}>
             <Image
-              src="/img/Toyota Hilux 4X4 Automática - 2007/frente-costado.jpg"
+              src="/img/Promos/entrega-de-llaves.webp"
               alt="Imagen ilustrativa de vehículo"
               width={900}
               height={600}

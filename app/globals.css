@@ -785,6 +785,25 @@ nav .social-links a:hover {
     font-size: 16px;
 }
 
+.etiqueta-reservado {
+    position: absolute;
+    top: 18px;
+    left: -44px;
+    width: 170px;
+    text-align: center;
+    transform: rotate(-40deg);
+    background: linear-gradient(180deg, #dcc47b 0%, #caa64d 100%);
+    color: #1f2937;
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    padding: 6px 8px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+    z-index: 4;
+    pointer-events: none;
+}
+
 .etiqueta-gnc {
     position: absolute;
     right: 0;
@@ -1286,10 +1305,19 @@ nav .social-links a:hover {
 }
 
 .mini-contacto-form {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
     max-width: 620px;
+}
+
+.mini-contacto-form input[type="text"] {
+    grid-column: 1 / -1;
+}
+
+.mini-contacto-form input[type="email"],
+.mini-contacto-form input[type="tel"] {
+    grid-column: span 1;
 }
 
 .mini-contacto-form input,
@@ -1302,12 +1330,14 @@ nav .social-links a:hover {
 }
 
 .mini-contacto-form textarea {
+    grid-column: 1 / -1;
     resize: vertical;
     min-height: 88px;
 }
 
 .mini-contacto-form button {
-    align-self: flex-start;
+    grid-column: 1 / -1;
+    justify-self: start;
     border: none;
     border-radius: 8px;
     background: #0044cc;

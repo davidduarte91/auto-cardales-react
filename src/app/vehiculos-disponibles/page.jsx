@@ -18,6 +18,7 @@ export default function VehiculosDisponiblesPage() {
           showCta={false}
           uniformCards={true}
           gridClassName="grilla-cuatro-iguales"
+          showReservedBanner={true}
         />
         <LocationSection />
       </main>

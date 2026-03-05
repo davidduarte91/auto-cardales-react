@@ -2,8 +2,8 @@ export const vehiculos = [
   {
     id: 1,
     nombre: "Peugeot Partner 1.4",
-    precio: "$100",
-    etiquetaPrecio: "$30.000.000",
+    precio: "$ 11.000.000",
+    etiquetaPrecio: "$ 11.000.000",
     año: 2015,
     km: "35.000 km",
     transmision: "Manual",
@@ -11,17 +11,24 @@ export const vehiculos = [
     version: "",
     destacado: true,
     mostrarEnHome: true,
-    reservaDesde: "",
+    reservaDesde: "$ 6.000.000",
     gnc: false,
     imagenes: [
-      "/img/Peugeot Partner 1.4 - 2015/frente.jpg",
-      "/img/Peugeot Partner 1.4 - 2015/frente-costado.jpg",
-      "/img/Peugeot Partner 1.4 - 2015/detrás.jpg"
+      "/img/Peugeot Partner 1.4 - 2015/01-frente-izquierda.webp",
+      "/img/Peugeot Partner 1.4 - 2015/02-frente.webp",
+      "/img/Peugeot Partner 1.4 - 2015/03-frente-derecha.webp",
+      "/img/Peugeot Partner 1.4 - 2015/04-atras-derecha.webp",
+      "/img/Peugeot Partner 1.4 - 2015/05-detrás.webp",
+      "/img/Peugeot Partner 1.4 - 2015/06-atras-izquierda.webp",
+      "/img/Peugeot Partner 1.4 - 2015/07-interior-adelante.webp",
+      "/img/Peugeot Partner 1.4 - 2015/08-interior-atras.webp",
+      "/img/Peugeot Partner 1.4 - 2015/09-motor.webp"
     ]
   },
   {
     id: 2,
     nombre: "Toyota Hilux 4X4",
+    reservado: true,
     precio: "$34.990.000",
     año: 2007,
     km: "120.000 km",
@@ -33,10 +40,9 @@ export const vehiculos = [
     reservaDesde: "",
     gnc: false,
     imagenes: [
-      "/img/Toyota Hilux 4X4 Automática - 2007/frente.jpg",
-      "/img/Toyota Hilux 4X4 Automática - 2007/frente-costado.jpg",
-      "/img/Toyota Hilux 4X4 Automática - 2007/frente-costado-derecho.jpg",
-      "/img/Toyota Hilux 4X4 Automática - 2007/frente-hero.webp"
+      "/img/Toyota Hilux 4X4 Automática - 2007/01-frente-izquierda.jpg",
+      "/img/Toyota Hilux 4X4 Automática - 2007/02-frente.jpg",
+      "/img/Toyota Hilux 4X4 Automática - 2007/03-frente-costado-derecho.jpg"
     ]
   },
   {
