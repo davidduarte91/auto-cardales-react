@@ -6,6 +6,7 @@ import Image from "next/image";
 import styles from "../app/vehiculos/[slug]/page.module.css";
 import { vehiculos } from "../data/vehiculos";
 import { slugifyVehiculoNombre } from "../lib/vehiculos";
+import { useCustomFormValidation } from "../lib/useCustomFormValidation";
 
 export default function VehicleDetailView({ vehiculo }) {
   const nextUrl = typeof window !== "undefined" ? `${window.location.origin}/gracias` : "/gracias";
@@ -35,6 +36,17 @@ export default function VehicleDetailView({ vehiculo }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isTouchHoldingThumb, setIsTouchHoldingThumb] = useState(false);
   const [orientacionPorSrc, setOrientacionPorSrc] = useState({});
+  const { errors, handleFieldInput, handleFormValidation } = useCustomFormValidation(
+    {
+      nombre: "Nombre",
+      email: "Email",
+      telefono: "Telefono",
+      mensaje: "Mensaje",
+    },
+    {
+      atLeastOneGroups: [["email", "telefono"]],
+    }
+  );
   const thumbRefs = useRef([]);
   const thumbTrackRef = useRef(null);
   const touchStartXRef = useRef(null);
@@ -239,13 +251,13 @@ export default function VehicleDetailView({ vehiculo }) {
 
   return (
     <main className={styles.page}>
-      <nav className={styles.breadcrumbs} aria-label="Navegación de rutas">
+      <div className={styles.breadcrumbs} role="navigation" aria-label="Navegación de rutas">
         <Link href="/" className={styles.breadcrumbLink}>Home</Link>
         <span className={styles.breadcrumbSep} aria-hidden="true">•</span>
         <Link href="/vehiculos-disponibles" className={styles.breadcrumbLink}>Vehículos disponibles</Link>
         <span className={styles.breadcrumbSep} aria-hidden="true">•</span>
         <span className={styles.breadcrumbCurrent}>{vehiculo.nombre}</span>
-      </nav>
+      </div>
 
       <section className={styles.layout}>
         <aside className={styles.infoCol}>
@@ -416,7 +428,6 @@ export default function VehicleDetailView({ vehiculo }) {
             </div>
           )}
 
-          {renderFinanciacionBanner(styles.financiacionDesktop)}
         </section>
       </section>
 
@@ -451,20 +462,23 @@ export default function VehicleDetailView({ vehiculo }) {
         </div>
       </section>
 
-      {renderFinanciacionBanner(styles.financiacionMobile)}
+      {renderFinanciacionBanner()}
 
       <section id="ubicacion" className={styles.consultaSection}>
         <div id="contacto" className={styles.consultaFormCol}>
           <h3>
             {isReservado
-              ? "¡Quiero consultar por vehiculos similares a este!"
-              : "¡Quiero consultar o agendar una visita por este vehículo!"}
+              ? "Quiero consultar por vehiculos similares a este"
+              : "Quiero consultar o agendar una visita por este vehiculo"}
           </h3>
 
           <form
             className={styles.consultaForm}
             action="https://formsubmit.co/david.duarte329@gmail.com"
             method="POST"
+            noValidate
+            onSubmit={handleFormValidation}
+            onInput={handleFieldInput}
           >
             <input
               type="hidden"
@@ -487,21 +501,34 @@ export default function VehicleDetailView({ vehiculo }) {
             <input type="hidden" name="vehiculo_transmision" value={vehiculo.transmision} />
 
             <div className={styles.topInputs}>
-              <input type="text" name="nombre" placeholder="Tu nombre" required />
-              <input type="email" name="email" placeholder="Tu email" required />
-              <input type="tel" name="telefono" placeholder="Tu teléfono" required />
+              <div className={styles.topInputField}>
+                <input type="text" name="nombre" placeholder="Tu nombre" required aria-invalid={Boolean(errors.nombre)} />
+                {errors.nombre ? <p className="field-error-msg">{errors.nombre}</p> : null}
+              </div>
+              <div className={styles.topInputField}>
+                <input type="email" name="email" placeholder="Tu email" required aria-invalid={Boolean(errors.email)} />
+                {errors.email ? <p className="field-error-msg">{errors.email}</p> : null}
+              </div>
+              <div className={styles.topInputField}>
+                <input type="tel" name="telefono" placeholder="Tu teléfono" required aria-invalid={Boolean(errors.telefono)} />
+                {errors.telefono ? <p className="field-error-msg">{errors.telefono}</p> : null}
+              </div>
             </div>
 
-            <textarea
-              name="mensaje"
-              rows={6}
-              placeholder={
-                isReservado
-                  ? "Contanos que tipo de vehiculo estas buscando y te mostramos opciones similares disponibles."
-                  : "Escribinos tu consulta aquí y nos pondremos en contacto lo más pronto posible."
-              }
-              required
-            ></textarea>
+            <div className={styles.textareaField}>
+              <textarea
+                name="mensaje"
+                rows={6}
+                placeholder={
+                  isReservado
+                    ? "Contanos que tipo de vehiculo estas buscando y te mostramos opciones similares disponibles."
+                    : "Escribinos tu consulta aquí y nos pondremos en contacto lo más pronto posible."
+                }
+                required
+                aria-invalid={Boolean(errors.mensaje)}
+              ></textarea>
+              {errors.mensaje ? <p className="field-error-msg">{errors.mensaje}</p> : null}
+            </div>
 
             <div className={styles.submitWrap}>
               <button type="submit" className={styles.submitBtn}>
@@ -513,18 +540,22 @@ export default function VehicleDetailView({ vehiculo }) {
         </div>
 
         <aside className={styles.consultaInfoCol}>
-          <i className="fa-solid fa-location-dot"></i>
-          <h3>Dónde estamos</h3>
-          <p>Sargento Cabral 357<br />Los Cardales</p>
+          <div className={styles.consultaInfoLeft}>
+            <i className="fa-solid fa-location-dot"></i>
+            <h3>Dónde estamos</h3>
+            <p>Sargento Cabral 357<br />Los Cardales</p>
+          </div>
 
-          <div className={styles.consultaTelefono}>11 5607-4949</div>
-          <div className={styles.consultaMail}>autocardales@gmail.com</div>
+          <div className={styles.consultaInfoRight}>
+            <div className={styles.consultaTelefono}>11 5607-4949</div>
+            <div className={styles.consultaMail}>autocardales@gmail.com</div>
 
-          <div className={styles.consultaSeguinos}>
-            <span>Seguinos</span>
-            <div>
-              <a href="https://www.facebook.com/autocardales" target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook"></i></a>
-              <a href="https://www.instagram.com/autocardales" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
+            <div className={styles.consultaSeguinos}>
+              <span>Seguinos</span>
+              <div>
+                <a href="https://www.facebook.com/autocardales" target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/autocardales" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
+              </div>
             </div>
           </div>
         </aside>

@@ -7,7 +7,11 @@ const poppins = Poppins({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://auto-cardales-react.vercel.app");
+
 export const metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Auto Cardales | Compra y Venta de Vehículos",
   description: "Compra y venta, consignación, permutas y gestoría en Los Cardales",
   icons: {

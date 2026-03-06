@@ -1,3 +1,1 @@
-import VehiculoDetallePage from "../../../src/app/vehiculos/[slug]/page";
-
-export default VehiculoDetallePage;
+export { default, generateMetadata } from "../../../src/app/vehiculos/[slug]/page";

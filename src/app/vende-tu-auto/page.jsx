@@ -5,10 +5,25 @@ import Image from "next/image";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import LocationSection from "../../components/LocationSection";
+import { useCustomFormValidation } from "../../lib/useCustomFormValidation";
 import styles from "./page.module.css";
 
 export default function VendeTuAutoPage() {
   const nextUrl = typeof window !== "undefined" ? `${window.location.origin}/gracias` : "/gracias";
+  const { errors, handleFieldInput, handleFormValidation } = useCustomFormValidation(
+    {
+      nombre: "Nombre y apellido",
+      telefono: "Telefono",
+      mail: "Email",
+      marca: "Marca",
+      modelo: "Modelo",
+      anio: "Anio",
+      kilometros: "Kilometros",
+    },
+    {
+      atLeastOneGroups: [["mail", "telefono"]],
+    }
+  );
 
   const handleScrollToForm = () => {
     const formSection = document.getElementById("formulario-cotizacion");
@@ -56,6 +71,9 @@ export default function VendeTuAutoPage() {
               className={styles.formGrid}
               action="https://formsubmit.co/david.duarte329@gmail.com"
               method="POST"
+              noValidate
+              onSubmit={handleFormValidation}
+              onInput={handleFieldInput}
             >
               <input type="hidden" name="_subject" value="Nueva solicitud para vender auto - Auto Cardales" />
               <input type="hidden" name="_next" value={nextUrl} />
@@ -64,37 +82,44 @@ export default function VendeTuAutoPage() {
 
               <label>
                 Nombre y Apellido
-                <input type="text" name="nombre" required />
+                <input type="text" name="nombre" required aria-invalid={Boolean(errors.nombre)} />
+                {errors.nombre ? <p className={styles.fieldError}>{errors.nombre}</p> : null}
               </label>
 
               <label>
                 Teléfono
-                <input type="tel" name="telefono" required />
+                <input type="tel" name="telefono" required aria-invalid={Boolean(errors.telefono)} />
+                {errors.telefono ? <p className={styles.fieldError}>{errors.telefono}</p> : null}
               </label>
 
               <label>
                 Mail
-                <input type="email" name="mail" required />
+                <input type="email" name="mail" required aria-invalid={Boolean(errors.mail)} />
+                {errors.mail ? <p className={styles.fieldError}>{errors.mail}</p> : null}
               </label>
 
               <label>
                 Marca
-                <input type="text" name="marca" />
+                <input type="text" name="marca" required aria-invalid={Boolean(errors.marca)} />
+                {errors.marca ? <p className={styles.fieldError}>{errors.marca}</p> : null}
               </label>
 
               <label>
                 Modelo
-                <input type="text" name="modelo" />
+                <input type="text" name="modelo" required aria-invalid={Boolean(errors.modelo)} />
+                {errors.modelo ? <p className={styles.fieldError}>{errors.modelo}</p> : null}
               </label>
 
               <label>
                 Año
-                <input type="number" name="anio" min="1900" max="2099" />
+                <input type="number" name="anio" min="1900" max="2099" required aria-invalid={Boolean(errors.anio)} />
+                {errors.anio ? <p className={styles.fieldError}>{errors.anio}</p> : null}
               </label>
 
               <label>
                 Kilómetros
-                <input type="number" name="kilometros" min="0" />
+                <input type="number" name="kilometros" min="0" required aria-invalid={Boolean(errors.kilometros)} />
+                {errors.kilometros ? <p className={styles.fieldError}>{errors.kilometros}</p> : null}
               </label>
 
               <label className={styles.fullWidth}>
@@ -103,7 +128,7 @@ export default function VendeTuAutoPage() {
               </label>
 
               <div className={styles.fullWidth}>
-                <button type="submit" className={styles.submitButton}>¡Enviar!</button>
+                <button type="submit" className={styles.submitButton}>Enviar</button>
               </div>
             </form>
           </div>
@@ -124,7 +149,7 @@ export default function VendeTuAutoPage() {
             rel="noopener noreferrer"
             className={styles.whatsAction}
           >
-            Hacé click aquí
+            Hacé click acá
           </a>
         </section>
 

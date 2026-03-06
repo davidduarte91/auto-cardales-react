@@ -2,6 +2,7 @@ export const vehiculos = [
   {
     id: 1,
     nombre: "Peugeot Partner 1.4",
+    reservado: true,
     precio: "$ 11.000.000",
     etiquetaPrecio: "$ 11.000.000",
     año: 2015,
@@ -12,7 +13,7 @@ export const vehiculos = [
     destacado: true,
     mostrarEnHome: true,
     reservaDesde: "$ 6.000.000",
-    gnc: false,
+    gnc: true,
     imagenes: [
       "/img/Peugeot Partner 1.4 - 2015/01-frente-izquierda.webp",
       "/img/Peugeot Partner 1.4 - 2015/02-frente.webp",

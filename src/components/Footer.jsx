@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -12,16 +11,6 @@ export default function Footer() {
             className="footer-ac-logo"
           />
         </div>
-
-        <nav className="footer-ac-links" aria-label="Enlaces importantes">
-          <ul>
-            <li><Link href="/vehiculos-disponibles">Vehículos disponibles</Link></li>
-            <li><Link href="/vende-tu-auto">Vendé tu auto</Link></li>
-            <li><a href="#ubicacion">Dónde estamos</a></li>
-            <li><Link href="/sobre-nosotros">Sobre nosotros</Link></li>
-            <li><a href="#contacto">Contacto</a></li>
-          </ul>
-        </nav>
 
         <div className="footer-ac-contacto">
           <div className="footer-ac-tel-grande">011 5607-4949</div>

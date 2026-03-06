@@ -102,9 +102,9 @@ export default function Header() {
         <ul>
           <li><Link href="/vehiculos-disponibles" onClick={closeMenu}><i className="fas fa-car"></i> Vehículos <br /> Disponibles</Link></li>
           <li><Link href="/vende-tu-auto" onClick={closeMenu}><i className="fas fa-tag"></i> Vendé tu <br /> auto</Link></li>
-          <li><a href="#ubicacion" onClick={closeMenu}><i className="fas fa-map-marker-alt"></i> Dónde <br /> estamos</a></li>
+          <li><Link href="/#ubicacion" onClick={closeMenu}><i className="fas fa-map-marker-alt"></i> Dónde <br /> estamos</Link></li>
           <li><Link href="/sobre-nosotros" onClick={closeMenu}><i className="fas fa-users"></i> Sobre <br /> nosotros</Link></li>
-          <li><a href="#contacto" onClick={closeMenu}><i className="fas fa-envelope"></i> Contactanos</a></li>
+          <li><Link href="/#contacto" onClick={closeMenu}><i className="fas fa-envelope"></i> Contactanos</Link></li>
         </ul>
         <div className="social-links">
           <a href="https://www.facebook.com/autocardales" target="_blank" rel="noopener noreferrer" title="Facebook">
