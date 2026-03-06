@@ -2,7 +2,7 @@ export const vehiculos = [
   {
     id: 1,
     nombre: "Peugeot Partner 1.4",
-    reservado: true,
+    reservado: false,
     precio: "$ 11.000.000",
     etiquetaPrecio: "$ 11.000.000",
     año: 2015,
