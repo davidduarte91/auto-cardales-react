@@ -4,9 +4,9 @@ import Image from "next/image";
 
 export default function HeroSection() {
   const heroImages = [
-    "/img/VW Gol Trend 1.6  Año 2019/frente-hero.webp",
-    "/img/Peugeot Partner 1.4 - 2015/frente-hero.webp",
-    "/img/Toyota Hilux 4X4 Automática - 2007/frente-hero.webp"
+    "/img/Fotos Hero/hilux-frente.webp",
+    "/img/Fotos Hero/gol-trend-frente.webp",
+    "/img/Fotos Hero/bora-frente.webp"
   ];
   const [index, setIndex] = useState(0);
 
