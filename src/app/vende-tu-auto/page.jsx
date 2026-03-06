@@ -69,7 +69,7 @@ export default function VendeTuAutoPage() {
 
             <form
               className={styles.formGrid}
-              action="https://formsubmit.co/david.duarte329@gmail.com"
+              action="https://formsubmit.co/autocardales@gmail.com"
               method="POST"
               noValidate
               onSubmit={handleFormValidation}

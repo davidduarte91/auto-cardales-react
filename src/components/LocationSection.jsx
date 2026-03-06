@@ -41,7 +41,7 @@ export default function LocationSection(){
         <div className="mini-contacto-grid">
           <form
             className="mini-contacto-form"
-            action="https://formsubmit.co/david.duarte329@gmail.com"
+            action="https://formsubmit.co/autocardales@gmail.com"
             method="POST"
             noValidate
             onSubmit={handleFormValidation}

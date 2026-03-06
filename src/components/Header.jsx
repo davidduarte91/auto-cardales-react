@@ -16,13 +16,29 @@ export default function Header() {
     const minDelta = 8;
 
     const onScroll = () => {
-      if (window.innerWidth <= 768) {
+      const currentY = window.pageYOffset || document.documentElement.scrollTop;
+      const delta = currentY - lastKnownScrollY;
+
+      if (window.innerWidth <= 1024) {
         header.classList.remove("hidden");
+
+        if (menuOpen) {
+          header.classList.remove("compact");
+          lastKnownScrollY = currentY;
+          return;
+        }
+
+        if (delta > minDelta && currentY > 60) {
+          header.classList.add("compact");
+        } else if (delta < -minDelta || currentY <= 20) {
+          header.classList.remove("compact");
+        }
+
+        lastKnownScrollY = currentY;
         return;
       }
 
-      const currentY = window.pageYOffset || document.documentElement.scrollTop;
-      const delta = currentY - lastKnownScrollY;
+      header.classList.remove("compact");
 
       if (delta > minDelta && currentY > 90) {
         header.classList.add("hidden");
@@ -34,16 +50,24 @@ export default function Header() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
 
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [menuOpen]);
 
   useEffect(() => {
     const onResize = () => {
       if (window.innerWidth > 768) {
         setMenuOpen(false);
+      }
+
+      if (window.innerWidth > 1024) {
+        const header = headerRef.current;
+        if (header) {
+          header.classList.remove("compact");
+        }
       }
     };
 

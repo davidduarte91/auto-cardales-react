@@ -5,17 +5,19 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "../app/vehiculos/[slug]/page.module.css";
 import { vehiculos } from "../data/vehiculos";
-import { slugifyVehiculoNombre } from "../lib/vehiculos";
+import { getVehiculoVersion, slugifyVehiculoNombre } from "../lib/vehiculos";
 import { useCustomFormValidation } from "../lib/useCustomFormValidation";
 
 export default function VehicleDetailView({ vehiculo }) {
+  const AUTO_PLAY_INTERVAL_MS = 3000;
+  const AUTO_PLAY_AFTER_MANUAL_MS = 5000;
   const nextUrl = typeof window !== "undefined" ? `${window.location.origin}/gracias` : "/gracias";
   const imagenes = vehiculo.imagenes || [];
   const totalImagenes = imagenes.length;
   const imagenBanner = "/img/Promos/image-removebg-preview.png";
   const motorDetectadoEnTitulo = (vehiculo.nombre.match(/\b\d(?:[.,]\d)?L?\b/i)?.[0] || "").replace(",", ".");
   const motor = String(vehiculo.motor || motorDetectadoEnTitulo || "").trim();
-  const version = String(vehiculo.version || "").trim();
+  const version = getVehiculoVersion(vehiculo);
   const estadoGeneral = String(vehiculo.estadoGeneral || "Muy buen estado general").trim();
   const condicionPago = String(vehiculo.condicionPago || "Aceptamos pagos en pesos al tipo de cambio del día.").trim();
   const infoAdicional = Array.isArray(vehiculo.infoAdicional)
@@ -33,6 +35,7 @@ export default function VehicleDetailView({ vehiculo }) {
     .sort((a, b) => Number(Boolean(a.reservado)) - Number(Boolean(b.reservado)))
     .slice(0, 4);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [nextAutoDelayMs, setNextAutoDelayMs] = useState(AUTO_PLAY_INTERVAL_MS);
   const [isHovered, setIsHovered] = useState(false);
   const [isTouchHoldingThumb, setIsTouchHoldingThumb] = useState(false);
   const [orientacionPorSrc, setOrientacionPorSrc] = useState({});
@@ -63,12 +66,27 @@ export default function VehicleDetailView({ vehiculo }) {
       return undefined;
     }
 
-    const intervalId = setInterval(() => {
+    const timeoutId = window.setTimeout(() => {
       setActiveIndex((current) => (current + 1) % totalImagenes);
-    }, 3000);
+      setNextAutoDelayMs(AUTO_PLAY_INTERVAL_MS);
+    }, nextAutoDelayMs);
 
-    return () => clearInterval(intervalId);
-  }, [totalImagenes, isHovered, isTouchHoldingThumb]);
+    return () => clearTimeout(timeoutId);
+  }, [totalImagenes, isHovered, isTouchHoldingThumb, nextAutoDelayMs, activeIndex, AUTO_PLAY_INTERVAL_MS]);
+
+  const moveCarouselBy = (delta, { isManual = false } = {}) => {
+    if (totalImagenes <= 1) return;
+
+    setActiveIndex((current) => (current + delta + totalImagenes) % totalImagenes);
+    setNextAutoDelayMs(isManual ? AUTO_PLAY_AFTER_MANUAL_MS : AUTO_PLAY_INTERVAL_MS);
+  };
+
+  const goToCarouselIndex = (index, { isManual = false } = {}) => {
+    if (totalImagenes <= 1) return;
+
+    setActiveIndex(index);
+    setNextAutoDelayMs(isManual ? AUTO_PLAY_AFTER_MANUAL_MS : AUTO_PLAY_INTERVAL_MS);
+  };
 
   useEffect(() => {
     const thumbTrack = thumbTrackRef.current;
@@ -97,12 +115,14 @@ export default function VehicleDetailView({ vehiculo }) {
       if (event.key === "ArrowLeft") {
         event.preventDefault();
         setActiveIndex((current) => (current - 1 + totalImagenes) % totalImagenes);
+        setNextAutoDelayMs(AUTO_PLAY_AFTER_MANUAL_MS);
         return;
       }
 
       if (event.key === "ArrowRight") {
         event.preventDefault();
         setActiveIndex((current) => (current + 1) % totalImagenes);
+        setNextAutoDelayMs(AUTO_PLAY_AFTER_MANUAL_MS);
       }
     };
 
@@ -111,13 +131,11 @@ export default function VehicleDetailView({ vehiculo }) {
   }, [totalImagenes]);
 
   const handlePrevImage = () => {
-    if (totalImagenes <= 1) return;
-    setActiveIndex((current) => (current - 1 + totalImagenes) % totalImagenes);
+    moveCarouselBy(-1, { isManual: true });
   };
 
   const handleNextImage = () => {
-    if (totalImagenes <= 1) return;
-    setActiveIndex((current) => (current + 1) % totalImagenes);
+    moveCarouselBy(1, { isManual: true });
   };
 
   const handleMainTouchStart = (event) => {
@@ -388,9 +406,9 @@ export default function VehicleDetailView({ vehiculo }) {
                           thumbRefs.current[index] = node;
                         }}
                         className={`${styles.thumbButton} ${activeIndex === index ? styles.thumbActive : ""}`.trim()}
-                        onClick={() => setActiveIndex(index)}
+                        onClick={() => goToCarouselIndex(index, { isManual: true })}
                         onTouchStart={() => {
-                          setActiveIndex(index);
+                          goToCarouselIndex(index, { isManual: true });
                           setIsTouchHoldingThumb(true);
                         }}
                         onTouchEnd={() => setIsTouchHoldingThumb(false)}
@@ -474,7 +492,7 @@ export default function VehicleDetailView({ vehiculo }) {
 
           <form
             className={styles.consultaForm}
-            action="https://formsubmit.co/david.duarte329@gmail.com"
+            action="https://formsubmit.co/autocardales@gmail.com"
             method="POST"
             noValidate
             onSubmit={handleFormValidation}
